@@ -1,35 +1,17 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Clock, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import apparelCollection from "@/assets/apparel-collection.jpg";
 
 const products = [
-  {
-    name: "'Renegade' Oversized Tee",
-    price: "$65",
-    status: "available" as const,
-    tag: "DROP 003",
-    sizes: "S — XXL",
-  },
-  {
-    name: "'Cyber-Mesh' Shorts",
-    price: "$78",
-    status: "available" as const,
-    tag: "DROP 003",
-    sizes: "S — XL",
-  },
-  {
-    name: "'Freakshow' Tech-Hat",
-    price: "$48",
-    status: "soldout" as const,
-    tag: "SOLD OUT",
-    sizes: "One Size",
-  },
+  { name: "'Renegade' Oversized Tee", price: "$65", status: "available" as const, tag: "DROP 003", sizes: "S — XXL", slug: "renegade-tee" },
+  { name: "'Cyber-Mesh' Shorts", price: "$78", status: "available" as const, tag: "DROP 003", sizes: "S — XL", slug: "cyber-mesh-shorts" },
+  { name: "'Freakshow' Tech-Hat", price: "$48", status: "soldout" as const, tag: "SOLD OUT", sizes: "One Size", slug: "freakshow-tech-hat" },
 ];
 
 const CountdownTimer = () => {
   const [time, setTime] = useState({ h: 2, m: 47, s: 33 });
-
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((prev) => {
@@ -43,17 +25,11 @@ const CountdownTimer = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-
   const pad = (n: number) => n.toString().padStart(2, "0");
-
   return (
     <div className="flex items-center gap-1 font-mono text-neon-pink text-sm">
       <Clock className="w-3.5 h-3.5 mr-1" />
-      <span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.h)}</span>
-      <span>:</span>
-      <span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.m)}</span>
-      <span>:</span>
-      <span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.s)}</span>
+      <span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.h)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.m)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.s)}</span>
     </div>
   );
 };
@@ -61,6 +37,7 @@ const CountdownTimer = () => {
 const GuerillaDropSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -74,7 +51,6 @@ const GuerillaDropSection = () => {
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
       <div className="container px-6 lg:px-12">
-        {/* Header */}
         <div className="mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-neon-pink/30 bg-neon-pink/5 text-neon-pink text-xs font-mono tracking-widest uppercase">
             <span className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse-neon" />
@@ -89,16 +65,9 @@ const GuerillaDropSection = () => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Collection image */}
-          <div
-            className={`relative transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
-          >
+          <div className={`relative transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
             <div className="relative aspect-[4/5] rounded overflow-hidden border border-border bg-card">
-              <img
-                src={apparelCollection}
-                alt="Freakshow streetwear collection"
-                className="w-full h-full object-cover"
-              />
+              <img src={apparelCollection} alt="Freakshow streetwear collection" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="text-xs font-mono text-neon-lime tracking-widest uppercase mb-2">Drop 003 Collection</div>
@@ -108,25 +77,17 @@ const GuerillaDropSection = () => {
             </div>
           </div>
 
-          {/* Product cards */}
           <div className="space-y-4">
             {products.map((product, index) => (
               <div
                 key={product.name}
-                className={`group p-6 bg-card border border-border rounded hover:neon-border-pink transition-all duration-500 ${
-                  isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-                }`}
+                className={`group p-6 bg-card border border-border rounded hover:neon-border-pink transition-all duration-500 cursor-pointer ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
                 style={{ transitionDelay: `${200 + index * 120}ms` }}
+                onClick={() => navigate(`/apparel/${product.slug}`)}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <span
-                      className={`inline-block px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase mb-2 ${
-                        product.status === "soldout"
-                          ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30"
-                          : "bg-neon-lime/10 text-neon-lime border border-neon-lime/30"
-                      }`}
-                    >
+                    <span className={`inline-block px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase mb-2 ${product.status === "soldout" ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30" : "bg-neon-lime/10 text-neon-lime border border-neon-lime/30"}`}>
                       {product.tag}
                     </span>
                     <h3 className="text-lg font-display font-bold text-foreground">{product.name}</h3>
@@ -138,14 +99,13 @@ const GuerillaDropSection = () => {
                 {product.status === "soldout" ? (
                   <div className="space-y-3">
                     <CountdownTimer />
-                    <Button variant="neonPinkOutline" size="sm" className="w-full" disabled>
-                      Notify When Restocked
+                    <Button variant="neonPinkOutline" size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); navigate(`/apparel/${product.slug}`); }}>
+                      View Details
                     </Button>
                   </div>
                 ) : (
-                  <Button variant="neonLime" size="sm" className="w-full">
-                    <ShoppingBag className="w-4 h-4 mr-2" />
-                    Add to Cart
+                  <Button variant="neonLime" size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); navigate(`/apparel/${product.slug}`); }}>
+                    <ShoppingBag className="w-4 h-4 mr-2" /> View & Add to Cart
                   </Button>
                 )}
               </div>

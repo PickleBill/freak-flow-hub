@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Activity, Zap, Target, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Activity, Zap, Target, TrendingUp, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import appDashboard from "@/assets/app-dashboard.jpg";
 
@@ -13,6 +14,7 @@ const stats = [
 const TechDashboard = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,13 +28,11 @@ const TechDashboard = () => {
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-lime/[0.01] to-transparent pointer-events-none" />
-
       <div className="container px-6 lg:px-12">
-        {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-neon-lime/30 bg-neon-lime/5 text-neon-lime text-xs font-mono tracking-widest uppercase">
             <span className="w-1.5 h-1.5 bg-neon-lime rounded-full animate-pulse-neon" />
-            FREAK-PRO APP
+            THE FUTURE OF FREAKING
           </div>
           <h2 className="text-4xl md:text-5xl font-display font-black text-foreground">
             YOUR <span className="text-neon-lime neon-text-lime">DATA</span>, YOUR DOMINANCE
@@ -42,45 +42,32 @@ const TechDashboard = () => {
           </p>
         </div>
 
-        {/* Stats grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
           {stats.map((stat, index) => (
             <div
               key={stat.label}
-              className={`p-5 bg-card border border-border rounded hud-corner transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`p-5 bg-card border border-border rounded hud-corner transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <stat.icon className={`w-5 h-5 mb-3 ${stat.color === "lime" ? "text-neon-lime" : "text-neon-pink"}`} />
               <div className="text-3xl font-display font-black text-foreground">
-                {stat.value}
-                <span className="text-sm text-muted-foreground ml-1">{stat.unit}</span>
+                {stat.value}<span className="text-sm text-muted-foreground ml-1">{stat.unit}</span>
               </div>
               <div className="text-xs text-muted-foreground font-mono uppercase tracking-wider mt-1">{stat.label}</div>
-              <div className={`text-xs font-mono mt-2 ${stat.color === "lime" ? "text-neon-lime" : "text-neon-pink"}`}>
-                {stat.trend}
-              </div>
+              <div className={`text-xs font-mono mt-2 ${stat.color === "lime" ? "text-neon-lime" : "text-neon-pink"}`}>{stat.trend}</div>
             </div>
           ))}
         </div>
 
-        {/* Dashboard mockup */}
-        <div
-          className={`relative rounded border border-border overflow-hidden transition-all duration-700 delay-500 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-          }`}
-        >
-          <img
-            src={appDashboard}
-            alt="Freak-Pro app dashboard showing swing velocity, impact map, and health score"
-            className="w-full h-auto"
-          />
+        <div className={`relative rounded border border-border overflow-hidden transition-all duration-700 delay-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+          <img src={appDashboard} alt="Freak-Pro app dashboard showing swing velocity, impact map, and health score" className="w-full h-auto" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
           <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-20" />
-
-          <div className="absolute bottom-8 left-0 right-0 text-center">
-            <Button variant="neonLime" size="lg">
+          <div className="absolute bottom-8 left-0 right-0 text-center flex flex-col sm:flex-row gap-3 justify-center items-center px-6">
+            <Button variant="neonLime" size="lg" onClick={() => navigate("/future")}>
+              Explore the Future <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+            <Button variant="neonPinkOutline" size="lg">
               Download Freak-Pro — Coming Soon
             </Button>
           </div>
