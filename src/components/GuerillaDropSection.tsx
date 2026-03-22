@@ -1,0 +1,160 @@
+import { useEffect, useRef, useState } from "react";
+import { Clock, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import apparelCollection from "@/assets/apparel-collection.jpg";
+
+const products = [
+  {
+    name: "'Renegade' Oversized Tee",
+    price: "$65",
+    status: "available" as const,
+    tag: "DROP 003",
+    sizes: "S — XXL",
+  },
+  {
+    name: "'Cyber-Mesh' Shorts",
+    price: "$78",
+    status: "available" as const,
+    tag: "DROP 003",
+    sizes: "S — XL",
+  },
+  {
+    name: "'Freakshow' Tech-Hat",
+    price: "$48",
+    status: "soldout" as const,
+    tag: "SOLD OUT",
+    sizes: "One Size",
+  },
+];
+
+const CountdownTimer = () => {
+  const [time, setTime] = useState({ h: 2, m: 47, s: 33 });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime((prev) => {
+        let { h, m, s } = prev;
+        s--;
+        if (s < 0) { s = 59; m--; }
+        if (m < 0) { m = 59; h--; }
+        if (h < 0) return { h: 0, m: 0, s: 0 };
+        return { h, m, s };
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const pad = (n: number) => n.toString().padStart(2, "0");
+
+  return (
+    <div className="flex items-center gap-1 font-mono text-neon-pink text-sm">
+      <Clock className="w-3.5 h-3.5 mr-1" />
+      <span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.h)}</span>
+      <span>:</span>
+      <span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.m)}</span>
+      <span>:</span>
+      <span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.s)}</span>
+    </div>
+  );
+};
+
+const GuerillaDropSection = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+      <div className="container px-6 lg:px-12">
+        {/* Header */}
+        <div className="mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-neon-pink/30 bg-neon-pink/5 text-neon-pink text-xs font-mono tracking-widest uppercase">
+            <span className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse-neon" />
+            LIMITED DROP
+          </div>
+          <h2 className="text-4xl md:text-5xl font-display font-black text-foreground">
+            THE <span className="text-neon-pink neon-text-pink">GUERILLA</span> DROP
+          </h2>
+          <p className="text-muted-foreground font-mono text-sm mt-3 max-w-lg">
+            Underground streetwear. Limited runs. When it's gone, it's gone.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Collection image */}
+          <div
+            className={`relative transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+          >
+            <div className="relative aspect-[4/5] rounded overflow-hidden border border-border bg-card">
+              <img
+                src={apparelCollection}
+                alt="Freakshow streetwear collection"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="text-xs font-mono text-neon-lime tracking-widest uppercase mb-2">Drop 003 Collection</div>
+                <div className="text-2xl font-display font-bold text-foreground">UNDERGROUND ESSENTIALS</div>
+              </div>
+              <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-20" />
+            </div>
+          </div>
+
+          {/* Product cards */}
+          <div className="space-y-4">
+            {products.map((product, index) => (
+              <div
+                key={product.name}
+                className={`group p-6 bg-card border border-border rounded hover:neon-border-pink transition-all duration-500 ${
+                  isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+                }`}
+                style={{ transitionDelay: `${200 + index * 120}ms` }}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <span
+                      className={`inline-block px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase mb-2 ${
+                        product.status === "soldout"
+                          ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30"
+                          : "bg-neon-lime/10 text-neon-lime border border-neon-lime/30"
+                      }`}
+                    >
+                      {product.tag}
+                    </span>
+                    <h3 className="text-lg font-display font-bold text-foreground">{product.name}</h3>
+                    <p className="text-xs text-muted-foreground font-mono mt-1">{product.sizes}</p>
+                  </div>
+                  <div className="text-xl font-display font-bold text-neon-lime">{product.price}</div>
+                </div>
+
+                {product.status === "soldout" ? (
+                  <div className="space-y-3">
+                    <CountdownTimer />
+                    <Button variant="neonPinkOutline" size="sm" className="w-full" disabled>
+                      Notify When Restocked
+                    </Button>
+                  </div>
+                ) : (
+                  <Button variant="neonLime" size="sm" className="w-full">
+                    <ShoppingBag className="w-4 h-4 mr-2" />
+                    Add to Cart
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default GuerillaDropSection;
