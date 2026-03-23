@@ -97,7 +97,7 @@ const FooterSection = () => {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-border/50 gap-4">
+        <div className="flex flex-col items-center pt-8 border-t border-border/50 gap-4">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
             <Zap className="w-4 h-4 text-neon-lime" />
             <span className="font-display text-xs tracking-widest uppercase text-muted-foreground">
@@ -105,15 +105,8 @@ const FooterSection = () => {
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground">
-            <span>Part of the</span>
-            <a href="https://courtana.com" target="_blank" rel="noopener noreferrer" className="text-neon-pink hover:text-neon-lime transition-colors">
-              Courtana Ecosystem
-            </a>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <div className="flex gap-6 text-xs font-mono text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            <div className="flex gap-4 sm:gap-6 text-xs font-mono text-muted-foreground">
               <button onClick={() => toast({ title: "Coming Soon", description: "Legal pages are being finalized. Email support@pickleballfreakshow.com for questions." })} className="hover:text-neon-lime transition-colors">Privacy</button>
               <button onClick={() => toast({ title: "Coming Soon", description: "Legal pages are being finalized. Email support@pickleballfreakshow.com for questions." })} className="hover:text-neon-lime transition-colors">Terms</button>
               <button onClick={() => toast({ title: "Coming Soon", description: "Legal pages are being finalized. Email support@pickleballfreakshow.com for questions." })} className="hover:text-neon-lime transition-colors">Returns</button>
@@ -123,6 +116,13 @@ const FooterSection = () => {
               <a href="https://tiktok.com/@pickleballfreakshow" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-neon-lime transition-colors"><TikTokIcon /></a>
               <a href="https://x.com/pickleballfreakshow" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-neon-lime transition-colors"><XIcon /></a>
             </div>
+          </div>
+
+          <div className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground">
+            <span>Part of the</span>
+            <a href="https://courtana.com" target="_blank" rel="noopener noreferrer" className="text-neon-pink hover:text-neon-lime transition-colors">
+              Courtana Ecosystem
+            </a>
           </div>
         </div>
       </div>

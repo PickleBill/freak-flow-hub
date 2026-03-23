@@ -140,15 +140,15 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="container px-6 lg:px-12 flex items-center justify-between h-14">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-neon-lime transition-colors text-sm font-mono">
-            <ArrowLeft className="w-4 h-4" /> Back
+        <div className="container px-4 sm:px-6 lg:px-12 flex items-center justify-between h-14">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-muted-foreground hover:text-neon-lime transition-colors text-sm font-mono flex-shrink-0">
+            <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back</span>
           </button>
-          <span className="font-display text-xs tracking-widest uppercase text-foreground cursor-pointer" onClick={() => navigate("/")}>
-            Pickleball<span className="text-neon-lime">Freakshow</span>
+          <span className="font-display text-[10px] sm:text-xs tracking-widest uppercase text-foreground cursor-pointer truncate mx-2" onClick={() => navigate("/")}>
+            <span className="hidden sm:inline">Pickleball</span><span className="text-neon-lime">Freakshow</span>
           </span>
-          <Button variant="neonLime" size="sm" onClick={toggleCart}>
-            <ShoppingBag className="w-4 h-4 mr-1" /> Cart
+          <Button variant="neonLime" size="sm" className="flex-shrink-0" onClick={toggleCart}>
+            <ShoppingBag className="w-4 h-4 sm:mr-1" /> <span className="hidden sm:inline">Cart</span>
           </Button>
         </div>
       </div>
@@ -179,7 +179,7 @@ const ProductDetail = () => {
                 <span className={`w-1.5 h-1.5 rounded-full animate-pulse-neon ${product.status === "preorder" ? "bg-neon-pink" : "bg-neon-lime"}`} />
                 {product.status === "preorder" ? "PRE-ORDER" : "IN STOCK"}
               </div>
-              <h1 className="text-3xl md:text-4xl font-display font-black text-foreground mb-3 leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-black text-foreground mb-3 leading-tight">
                 {product.name.toUpperCase()}
               </h1>
               <p className="text-muted-foreground font-mono text-sm mb-6">{product.tagline}</p>
@@ -205,7 +205,7 @@ const ProductDetail = () => {
 
               <div className="mt-12">
                 <h3 className="text-sm font-display font-bold text-foreground uppercase tracking-widest mb-4">Technical Specs</h3>
-                <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
                   {product.specs.map((spec) => (
                     <div key={spec.label} className="flex justify-between border-b border-border/50 pb-2">
                       <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">{spec.label}</span>
@@ -263,7 +263,7 @@ const ProductDetail = () => {
               COMPARE THE <span className="text-neon-lime neon-text-lime">LINEUP</span>
             </h2>
             <p className="text-xs text-muted-foreground font-mono text-center mb-10">Every freak has a favorite. Find yours.</p>
-            <div className="grid sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {Object.entries(productData).filter(([s]) => s !== slug).map(([otherSlug, p]) => (
                 <div
                   key={otherSlug}

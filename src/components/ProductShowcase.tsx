@@ -181,11 +181,11 @@ const ProductShowcase = () => {
                 </div>
               </div>
             ))}
-            <div className="pt-6 pl-4 flex flex-wrap gap-3">
-              <Button variant="neonLime" size="lg" onClick={() => navigate("/product/gen3-haptic-pro")}>
+            <div className="pt-6 pl-0 sm:pl-4 flex flex-col sm:flex-row flex-wrap gap-3">
+              <Button variant="neonLime" size="lg" className="w-full sm:w-auto" onClick={() => navigate("/product/gen3-haptic-pro")}>
                 View Gen 3 Details
               </Button>
-              <Button variant="neonPinkOutline" size="lg" onClick={() => navigate("/preorder/gen3-haptic-pro")}>
+              <Button variant="neonPinkOutline" size="lg" className="w-full sm:w-auto" onClick={() => navigate("/preorder/gen3-haptic-pro")}>
                 <Crown className="w-4 h-4 mr-2" /> Pre-Order — $216.75
               </Button>
             </div>
@@ -232,10 +232,10 @@ const ProductShowcase = () => {
             <Table className="bg-card border border-border rounded">
               <TableHeader>
                 <TableRow className="border-border hover:bg-transparent">
-                  <TableHead className="font-mono text-xs text-muted-foreground uppercase tracking-widest">Feature</TableHead>
-                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 1 OG</TableHead>
-                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 2 Trainer</TableHead>
-                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 3 Haptic Pro</TableHead>
+                  <TableHead className="font-mono text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest min-w-[100px]">Feature</TableHead>
+                  <TableHead className="font-mono text-[10px] sm:text-xs text-neon-lime uppercase tracking-widest text-center min-w-[90px] whitespace-nowrap">Gen 1<span className="hidden sm:inline"> OG</span></TableHead>
+                  <TableHead className="font-mono text-[10px] sm:text-xs text-neon-lime uppercase tracking-widest text-center min-w-[90px] whitespace-nowrap">Gen 2<span className="hidden sm:inline"> Trainer</span></TableHead>
+                  <TableHead className="font-mono text-[10px] sm:text-xs text-neon-lime uppercase tracking-widest text-center min-w-[90px] whitespace-nowrap">Gen 3<span className="hidden sm:inline"> Haptic Pro</span></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

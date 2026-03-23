@@ -26,8 +26,8 @@ const ProductQuickView = ({ product, onClose }: ProductQuickViewProps) => {
   return (
     <>
       <div className="fixed inset-0 z-[70] bg-background/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="fixed inset-0 z-[71] flex items-center justify-center p-4">
-        <div className="relative w-full max-w-lg bg-card border border-border rounded-lg overflow-hidden animate-scale-in">
+      <div className="fixed inset-0 z-[71] flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div className="relative w-full max-w-lg bg-card border border-border rounded-t-lg sm:rounded-lg overflow-hidden animate-scale-in max-h-[90vh] overflow-y-auto">
           <button onClick={onClose} className="absolute top-3 right-3 z-10 text-muted-foreground hover:text-foreground transition-colors">
             <X className="w-5 h-5" />
           </button>

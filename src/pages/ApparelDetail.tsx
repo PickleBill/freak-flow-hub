@@ -164,15 +164,15 @@ const ApparelDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-        <div className="container px-6 lg:px-12 flex items-center justify-between h-14">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-neon-lime transition-colors text-sm font-mono">
-            <ArrowLeft className="w-4 h-4" /> Back
+        <div className="container px-4 sm:px-6 lg:px-12 flex items-center justify-between h-14">
+          <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-muted-foreground hover:text-neon-lime transition-colors text-sm font-mono flex-shrink-0">
+            <ArrowLeft className="w-4 h-4" /> <span className="hidden sm:inline">Back</span>
           </button>
-          <span className="font-display text-xs tracking-widest uppercase text-foreground cursor-pointer" onClick={() => navigate("/")}>
-            Pickleball<span className="text-neon-lime">Freakshow</span>
+          <span className="font-display text-[10px] sm:text-xs tracking-widest uppercase text-foreground cursor-pointer truncate mx-2" onClick={() => navigate("/")}>
+            <span className="hidden sm:inline">Pickleball</span><span className="text-neon-lime">Freakshow</span>
           </span>
-          <Button variant="neonLime" size="sm" onClick={toggleCart}>
-            <ShoppingBag className="w-4 h-4 mr-1" /> Cart
+          <Button variant="neonLime" size="sm" className="flex-shrink-0" onClick={toggleCart}>
+            <ShoppingBag className="w-4 h-4 sm:mr-1" /> <span className="hidden sm:inline">Cart</span>
           </Button>
         </div>
       </div>
@@ -197,7 +197,7 @@ const ApparelDetail = () => {
                 <span className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse-neon" />
                 GUERILLA DROP
               </div>
-              <h1 className="text-3xl md:text-4xl font-display font-black text-foreground mb-3 leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-black text-foreground mb-3 leading-tight">
                 {product.name.toUpperCase()}
               </h1>
               <p className="text-muted-foreground font-mono text-sm mb-6">{product.tagline}</p>

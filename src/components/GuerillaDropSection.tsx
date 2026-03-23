@@ -125,12 +125,12 @@ const GuerillaDropSection = () => {
                 style={{ transitionDelay: `${200 + index * 120}ms` }}
                 onClick={() => navigate(`/apparel/${product.slug}`)}
               >
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex items-start justify-between gap-3 mb-4">
                   <div>
                     <span className={`inline-block px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase mb-2 ${product.status === "preorder" ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30" : "bg-neon-lime/10 text-neon-lime border border-neon-lime/30"}`}>
                       {product.tag}
                     </span>
-                    <h3 className="text-lg font-display font-bold text-foreground">{product.name}</h3>
+                    <h3 className="text-sm sm:text-lg font-display font-bold text-foreground">{product.name}</h3>
                     <p className="text-xs text-muted-foreground font-mono mt-1">{product.sizes}</p>
                   </div>
                   <div className="text-xl font-display font-bold text-neon-lime">{product.price}</div>
