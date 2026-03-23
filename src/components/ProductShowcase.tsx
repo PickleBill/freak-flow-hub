@@ -4,6 +4,7 @@ import { Zap, Brain, Vibrate, Shield, Target, Gauge, Crown, Check, Minus } from 
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import EarlyAccessModal from "@/components/EarlyAccessModal";
+import ProductQuickView from "@/components/ProductQuickView";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import paddleXray from "@/assets/paddle-xray.jpg";
 import paddleHero from "@/assets/paddle-hero.jpg";
