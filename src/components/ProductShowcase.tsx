@@ -181,11 +181,11 @@ const ProductShowcase = () => {
                 </div>
               </div>
             ))}
-            <div className="pt-6 pl-4 flex flex-wrap gap-3">
-              <Button variant="neonLime" size="lg" onClick={() => navigate("/product/gen3-haptic-pro")}>
+            <div className="pt-6 pl-0 sm:pl-4 flex flex-col sm:flex-row flex-wrap gap-3">
+              <Button variant="neonLime" size="lg" className="w-full sm:w-auto" onClick={() => navigate("/product/gen3-haptic-pro")}>
                 View Gen 3 Details
               </Button>
-              <Button variant="neonPinkOutline" size="lg" onClick={() => navigate("/preorder/gen3-haptic-pro")}>
+              <Button variant="neonPinkOutline" size="lg" className="w-full sm:w-auto" onClick={() => navigate("/preorder/gen3-haptic-pro")}>
                 <Crown className="w-4 h-4 mr-2" /> Pre-Order — $216.75
               </Button>
             </div>
