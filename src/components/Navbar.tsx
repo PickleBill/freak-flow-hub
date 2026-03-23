@@ -150,6 +150,10 @@ const Navbar = () => {
               <span className="absolute -top-1 right-1 w-4 h-4 bg-neon-lime text-background text-[10px] font-mono font-bold rounded-full flex items-center justify-center">{cartCount}</span>
             )}
           </button>
+          <button onClick={() => scrollTo("drops")} className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-neon-pink transition-colors">
+            <Crown className="w-4 h-4" />
+            <span className="text-[10px] font-mono uppercase tracking-wider">Drops</span>
+          </button>
         </div>
       </div>
 
