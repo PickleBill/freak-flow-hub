@@ -43,7 +43,7 @@ const apparelData: Record<string, {
     name: "'Freakshow' Tech-Hat",
     tagline: "Structured 6-panel with embedded NFC chip. Tap to unlock exclusive content.",
     price: "$48",
-    image: apparelCollection,
+    image: freakshowTechHat,
     tag: "SOLD OUT",
     available: false,
     sizes: ["One Size"],

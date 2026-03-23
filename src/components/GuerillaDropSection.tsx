@@ -68,15 +68,18 @@ const GuerillaDropSection = () => {
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div className={`relative transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
-            <div className="relative aspect-[4/5] rounded overflow-hidden border border-border bg-card">
-              <img src={apparelCollection} alt="Freakshow streetwear collection" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6">
-                <div className="text-xs font-mono text-neon-lime tracking-widest uppercase mb-2">Drop 003 Collection</div>
-                <div className="text-2xl font-display font-bold text-foreground">UNDERGROUND ESSENTIALS</div>
+              <div className="relative aspect-[4/5] rounded overflow-hidden border border-border bg-card">
+                <div className="grid grid-rows-3 h-full">
+                  {products.map((product, i) => (
+                    <div key={i} className="relative overflow-hidden cursor-pointer group/img" onClick={() => navigate(`/apparel/${product.slug}`)}>
+                      <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" />
+                      <div className="absolute inset-0 bg-background/40 group-hover/img:bg-background/20 transition-colors" />
+                      <div className="absolute bottom-2 left-3 text-[10px] font-mono text-neon-lime tracking-widest uppercase">{product.name}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-20" />
               </div>
-              <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-20" />
-            </div>
           </div>
 
           <div className="space-y-4">
