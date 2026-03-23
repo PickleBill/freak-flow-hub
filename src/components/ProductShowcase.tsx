@@ -4,6 +4,7 @@ import { Zap, Brain, Vibrate, Shield, Target, Gauge, Crown, Check, Minus } from 
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import EarlyAccessModal from "@/components/EarlyAccessModal";
+import ProductQuickView from "@/components/ProductQuickView";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import paddleXray from "@/assets/paddle-xray.jpg";
 import paddleHero from "@/assets/paddle-hero.jpg";
@@ -74,6 +75,7 @@ const CellValue = ({ value }: { value: string | boolean | null }) => {
 const ProductShowcase = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showEarlyAccess, setShowEarlyAccess] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<typeof paddles[0] | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
@@ -111,7 +113,7 @@ const ProductShowcase = () => {
               key={paddle.slug}
               className={`group bg-card border border-border rounded overflow-hidden hover-glitch cursor-pointer transition-all duration-500 hover:neon-border-lime ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ transitionDelay: `${index * 120}ms` }}
-              onClick={() => navigate(`/product/${paddle.slug}`)}
+              onClick={() => setQuickViewProduct(paddle)}
             >
               <div className="relative aspect-square overflow-hidden">
                 <img src={paddle.image} alt={paddle.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -255,6 +257,7 @@ const ProductShowcase = () => {
       </div>
 
       <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
+      <ProductQuickView product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
     </section>
   );
 };
