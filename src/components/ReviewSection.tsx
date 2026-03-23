@@ -70,6 +70,26 @@ const ReviewSection = () => {
           </p>
         </div>
 
+        <div className="flex items-center justify-center gap-6 mb-10 p-4 bg-card border border-border/50 rounded max-w-sm mx-auto">
+          <div className="text-center">
+            <div className="text-4xl font-display font-black text-neon-lime">4.9</div>
+            <div className="flex gap-0.5 justify-center mt-1">
+              {[1,2,3,4,5].map(i => <svg key={i} className="w-3.5 h-3.5 fill-neon-lime text-neon-lime" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
+            </div>
+            <div className="text-[10px] text-muted-foreground font-mono mt-1">Avg Rating</div>
+          </div>
+          <div className="w-px h-12 bg-border" />
+          <div className="text-center">
+            <div className="text-2xl font-display font-bold text-foreground">847</div>
+            <div className="text-[10px] text-muted-foreground font-mono mt-1">Verified Reviews</div>
+          </div>
+          <div className="w-px h-12 bg-border" />
+          <div className="text-center">
+            <div className="text-2xl font-display font-bold text-neon-pink">94%</div>
+            <div className="text-[10px] text-muted-foreground font-mono mt-1">Recommend</div>
+          </div>
+        </div>
+
         <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
           {reviews.map((review, index) => (
             <div
