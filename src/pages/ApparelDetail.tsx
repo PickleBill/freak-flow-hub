@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingBag, Ruler } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import apparelCollection from "@/assets/apparel-collection.jpg";
-import athleteUrban from "@/assets/athlete-urban.jpg";
+import renegadeTee from "@/assets/renegade-tee.jpg";
+import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
+import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
 import { useState, useEffect } from "react";
 
 const apparelData: Record<string, {
