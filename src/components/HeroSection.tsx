@@ -63,6 +63,7 @@ const HeroSection = () => {
   return (
     <section ref={ref} className="relative min-h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0">
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-30 pointer-events-none z-[1]" />
         <img src={paddleHero} alt="Freakshow Gen 3 Haptic Pro paddle" className="w-full h-full object-cover opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />

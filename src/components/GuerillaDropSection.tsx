@@ -42,7 +42,7 @@ const CountdownTimer = () => {
           <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1.5">Drop closes in</div>
           <div className="flex items-center gap-1 font-mono text-neon-pink text-sm">
             <Clock className="w-3.5 h-3.5 mr-1" />
-            <span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.h)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.m)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.s)}</span>
+            <span key={`h-${pad(time.h)}`} className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums transition-all duration-150">{pad(time.h)}</span>:<span key={`m-${pad(time.m)}`} className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums transition-all duration-150">{pad(time.m)}</span>:<span key={`s-${pad(time.s)}`} className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums transition-all duration-150">{pad(time.s)}</span>
           </div>
         </>
       )}
