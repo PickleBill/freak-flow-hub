@@ -63,6 +63,17 @@ const HeroSection = () => {
             Free shipping on orders $200+ · 30-day returns · USAP compliance pending
           </p>
 
+          <div className={`flex flex-wrap items-center gap-4 sm:gap-6 mt-8 transition-all duration-700 delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 bg-neon-lime rounded-full animate-pulse-neon" />
+              <span className="text-[11px] text-muted-foreground font-mono">4,200+ on the Freak-List</span>
+            </div>
+            <span className="text-border text-xs">·</span>
+            <span className="text-[11px] text-muted-foreground font-mono">234K TikTok views</span>
+            <span className="text-border text-xs">·</span>
+            <span className="text-[11px] text-muted-foreground font-mono">⭐⭐⭐⭐⭐ 5-star rated</span>
+          </div>
+
           <div className={`flex flex-wrap gap-4 sm:gap-8 mt-16 pt-8 border-t border-border/50 transition-all duration-700 delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
             {[
               { value: "16mm", label: "Foam Core" },
