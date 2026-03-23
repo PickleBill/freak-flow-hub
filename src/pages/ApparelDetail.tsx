@@ -21,7 +21,7 @@ const apparelData: Record<string, {
     name: "'Renegade' Oversized Tee",
     tagline: "Underground issue. Oversized drop-shoulder cut with reflective Freakshow branding.",
     price: "$65",
-    image: apparelCollection,
+    image: renegadeTee,
     tag: "DROP 003",
     available: true,
     sizes: ["S", "M", "L", "XL", "XXL"],
