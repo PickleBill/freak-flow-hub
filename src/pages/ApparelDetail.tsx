@@ -66,6 +66,7 @@ const ApparelDetail = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showEarlyAccess, setShowEarlyAccess] = useState(false);
   const { addToCart, toggleCart } = useCart();
+  const { toast } = useToast();
 
   useEffect(() => {
     window.scrollTo(0, 0);
