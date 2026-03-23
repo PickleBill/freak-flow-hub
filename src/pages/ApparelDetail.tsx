@@ -7,6 +7,7 @@ import renegadeTee from "@/assets/renegade-tee.jpg";
 import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
 import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
 import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const apparelData: Record<string, {
   name: string;

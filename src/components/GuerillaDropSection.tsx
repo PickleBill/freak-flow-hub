@@ -14,29 +14,38 @@ const products = [
   { name: "'Freakshow' Tech-Hat", price: "$48", priceNum: 48, status: "preorder" as const, tag: "PRE-ORDER", sizes: "One Size", slug: "freakshow-tech-hat", image: freakshowTechHat },
 ];
 
+const DROP_END = new Date("2026-04-20T23:59:59Z").getTime();
+
+const calcRemaining = () => {
+  const diff = Math.max(0, DROP_END - Date.now());
+  return {
+    h: Math.floor(diff / 3600000),
+    m: Math.floor((diff % 3600000) / 60000),
+    s: Math.floor((diff % 60000) / 1000),
+  };
+};
+
 const CountdownTimer = () => {
-  const [time, setTime] = useState({ h: 23, m: 47, s: 33 });
+  const [time, setTime] = useState(calcRemaining);
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTime((prev) => {
-        let { h, m, s } = prev;
-        s--;
-        if (s < 0) { s = 59; m--; }
-        if (m < 0) { m = 59; h--; }
-        if (h < 0) return { h: 0, m: 0, s: 0 };
-        return { h, m, s };
-      });
-    }, 1000);
+    const interval = setInterval(() => setTime(calcRemaining), 1000);
     return () => clearInterval(interval);
   }, []);
   const pad = (n: number) => n.toString().padStart(2, "0");
+  const expired = time.h === 0 && time.m === 0 && time.s === 0;
   return (
     <div>
-      <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1.5">Drop closes in</div>
-      <div className="flex items-center gap-1 font-mono text-neon-pink text-sm">
-        <Clock className="w-3.5 h-3.5 mr-1" />
-        <span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.h)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.m)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.s)}</span>
-      </div>
+      {expired ? (
+        <div className="text-xs text-neon-pink font-mono uppercase tracking-wider">DROP CLOSED — Join restock list ↓</div>
+      ) : (
+        <>
+          <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1.5">Drop closes in</div>
+          <div className="flex items-center gap-1 font-mono text-neon-pink text-sm">
+            <Clock className="w-3.5 h-3.5 mr-1" />
+            <span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.h)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.m)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.s)}</span>
+          </div>
+        </>
+      )}
     </div>
   );
 };
