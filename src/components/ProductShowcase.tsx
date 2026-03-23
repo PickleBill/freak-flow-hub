@@ -75,6 +75,7 @@ const CellValue = ({ value }: { value: string | boolean | null }) => {
 const ProductShowcase = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showEarlyAccess, setShowEarlyAccess] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<typeof paddles[0] | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
