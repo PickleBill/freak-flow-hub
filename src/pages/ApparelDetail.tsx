@@ -6,6 +6,10 @@ import EarlyAccessModal from "@/components/EarlyAccessModal";
 import renegadeTee from "@/assets/renegade-tee.jpg";
 import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
 import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
+import tropicalCourtShirt from "@/assets/tropical-court-shirt.jpg";
+import chubbyFreakPants from "@/assets/chubby-freak-pants.jpg";
+import electroBallPickleballs from "@/assets/electro-ball-pickleballs.jpg";
+import neuralNetCourtBag from "@/assets/neural-net-court-bag.jpg";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -57,6 +61,54 @@ const apparelData: Record<string, {
     details: ["Structured 6-panel", "Embedded NFC chip", "Moisture-wicking sweatband", "Adjustable snapback", "Reflective logo patch"],
     material: "100% Ripstop Nylon",
   },
+  "tropical-court-shirt": {
+    name: "'Freakshow' Tropical Court Shirt",
+    tagline: "Hawaiian-style button-up with neon paddle prints. UV-protective with mesh-back ventilation.",
+    price: "$85",
+    priceNum: 85,
+    image: tropicalCourtShirt,
+    tag: "DROP 004",
+    available: true,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    details: ["Relaxed camp-collar fit", "All-over neon paddle print", "UPF 50+ UV protection", "Mesh-back ventilation panel", "Coconut shell buttons"],
+    material: "100% Rayon — UV-Treated",
+  },
+  "chubby-freak-pants": {
+    name: "'Chubby Freak' Wide-Leg Pants",
+    tagline: "Loud all-over Freakshow branding. Elastic waist, deep pockets, maximum court swagger.",
+    price: "$92",
+    priceNum: 92,
+    image: chubbyFreakPants,
+    tag: "DROP 004",
+    available: true,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    details: ["Relaxed wide-leg cut", "All-over graffiti print", "Elastic waistband with drawcord", "4 deep pockets", "Reinforced seams"],
+    material: "100% Cotton Twill — 320gsm",
+  },
+  "electro-ball-pickleballs": {
+    name: "'Electro-Ball' LED Pickleballs",
+    tagline: "Glow-in-the-dark pickleballs with embedded LEDs. Tournament-weight, USB rechargeable.",
+    price: "$34",
+    priceNum: 34,
+    image: electroBallPickleballs,
+    tag: "NEW GEAR",
+    available: true,
+    sizes: ["3-Pack"],
+    details: ["Tournament-weight (26g each)", "Multi-color LED modes", "USB-C rechargeable", "40-hole precision design", "8hr battery life per charge"],
+    material: "Outdoor-grade polymer — USAPA spec",
+  },
+  "neural-net-court-bag": {
+    name: "'Neural Net' Court Bag",
+    tagline: "Tech-enabled duffel with paddle compartment, shoe pocket, NFC tag, and reflective branding.",
+    price: "$120",
+    priceNum: 120,
+    image: neuralNetCourtBag,
+    tag: "PRE-ORDER",
+    available: true,
+    sizes: ["One Size"],
+    details: ["Dedicated paddle compartment (fits 2)", "Ventilated shoe pocket", "NFC quick-tap tag", "Reflective Freakshow branding", "Water-resistant base"],
+    material: "1000D Cordura Nylon — DWR coated",
+  },
 };
 
 const ApparelDetail = () => {
@@ -72,7 +124,11 @@ const ApparelDetail = () => {
     window.scrollTo(0, 0);
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [slug]);
+
+  useEffect(() => {
+    setSelectedSize(null);
+  }, [slug]);
 
   const product = apparelData[slug || ""];
   if (!product) {
@@ -129,7 +185,7 @@ const ApparelDetail = () => {
                 <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-20" />
                 <div className="absolute top-4 left-4">
-                  <span className={`px-3 py-1 text-xs font-mono tracking-widest uppercase ${isPreorder ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30" : "bg-neon-lime/10 text-neon-lime border border-neon-lime/30"}`}>
+                  <span className={`px-3 py-1 text-xs font-mono tracking-widest uppercase ${isPreorder ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30" : product.tag === "NEW GEAR" ? "bg-neon-lime/10 text-neon-lime border border-neon-lime/30" : "bg-neon-pink/10 text-neon-pink border border-neon-pink/30"}`}>
                     {product.tag}
                   </span>
                 </div>
@@ -137,7 +193,7 @@ const ApparelDetail = () => {
             </div>
 
             <div className={`transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-              <div className={`inline-flex items-center gap-2 px-3 py-1 mb-4 border text-xs font-mono tracking-widest uppercase ${isPreorder ? "border-neon-pink/30 bg-neon-pink/5 text-neon-pink" : "border-neon-pink/30 bg-neon-pink/5 text-neon-pink"}`}>
+              <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-neon-pink/30 bg-neon-pink/5 text-neon-pink text-xs font-mono tracking-widest uppercase">
                 <span className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse-neon" />
                 GUERILLA DROP
               </div>
@@ -150,7 +206,7 @@ const ApparelDetail = () => {
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-display font-bold text-foreground uppercase tracking-widest">Select Size</span>
-                  <button onClick={() => toast({ title: "Size Guide", description: "Renegade Tee: S=36\", M=38\", L=40\", XL=42\", XXL=44\" chest. Cyber-Mesh Shorts: S=28-30\", M=32-34\", L=36-38\", XL=40-42\" waist. When in doubt, size up — all pieces are oversized cut." })} className="flex items-center gap-1 text-xs text-muted-foreground font-mono hover:text-neon-lime transition-colors">
+                  <button onClick={() => toast({ title: "Size Guide", description: "When in doubt, size up — all pieces are oversized cut. Check product details for specific measurements." })} className="flex items-center gap-1 text-xs text-muted-foreground font-mono hover:text-neon-lime transition-colors">
                     <Ruler className="w-3 h-3" /> Size Guide
                   </button>
                 </div>
@@ -173,7 +229,7 @@ const ApparelDetail = () => {
               </Button>
 
               {isPreorder ? (
-                <Button variant="neonPinkOutline" size="lg" className="w-full mb-4" onClick={() => navigate(`/apparel/${slug}`)}>
+                <Button variant="neonPinkOutline" size="lg" className="w-full mb-4" onClick={() => navigate(`/preorder/${slug}`)}>
                   <Crown className="w-4 h-4 mr-2" />
                   Freak Member Pre-Order — <span className="line-through opacity-60 mx-1">{product.price}</span> ${discountPrice.toFixed(2)}
                 </Button>
@@ -206,21 +262,22 @@ const ApparelDetail = () => {
               </div>
             </div>
           </div>
-          {/* Cross-sell: Other Apparel */}
+
+          {/* Cross-sell */}
           <div className="mt-24">
             <h2 className="text-2xl font-display font-black text-foreground mb-2 text-center">
               COMPLETE THE <span className="text-neon-pink neon-text-pink">KIT</span>
             </h2>
             <p className="text-xs text-muted-foreground font-mono text-center mb-10">Gear up head-to-toe. Underground issue only.</p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Object.entries(apparelData).filter(([s]) => s !== slug).map(([otherSlug, p]) => (
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              {Object.entries(apparelData).filter(([s]) => s !== slug).slice(0, 6).map(([otherSlug, p]) => (
                 <div
                   key={otherSlug}
                   onClick={() => navigate(`/apparel/${otherSlug}`)}
                   className="group p-4 bg-card border border-border rounded cursor-pointer hover:border-neon-pink/50 transition-all"
                 >
                   <div className="aspect-[4/5] rounded overflow-hidden border border-border mb-3">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                   </div>
                   <h3 className="text-xs font-display font-bold text-foreground uppercase tracking-wider mb-1">{p.name}</h3>
                   <div className="flex items-center justify-between">
