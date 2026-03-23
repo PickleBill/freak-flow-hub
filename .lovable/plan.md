@@ -1,90 +1,120 @@
 
 
-## Plan: Pickleball Freakshow — Full Polish & Functionality Pass
+## Plan: Full E-Commerce Flow, Product Catalog Expansion & Lovable Cloud Backend
 
-This is a comprehensive update across 7 areas. Here's the breakdown:
+This plan transforms the site from a visual prototype into a functional pre-commerce platform with real auth, database-backed orders, and an expanded product catalog.
 
 ---
 
-### 1. Glitch Animation on Navbar Brand Name (every 15s)
-- Update the `Navbar.tsx` brand text to use a `useState` + `setInterval` approach that toggles a CSS glitch class every 15 seconds for ~500ms
-- Create a new `@keyframes glitch-brand` animation in `index.css` that's shorter/punchier than the existing glitch
-- Apply the same glitch effect on product/apparel detail page brand names
+### 1. Expand Product Catalog — 3 Paddles + Apparel
 
-### 2. Subtle Hover Glitch on Interactive Cards
-- Add a CSS `.hover-glitch` utility class that applies a very subtle glitch (tiny translate + hue-rotate) on hover
-- Apply to: Freak-Flow social cards, Guerilla Drop product cards, Tech Dashboard stat cards, and feature cards on ProductShowcase
-- Keep it subtle: 1-2px movement, quick duration
+Add two new paddles alongside the existing Gen 3 Haptic Pro:
 
-### 3. Freak-Flow Social Feed — Unique People Images + Modal Pop-ups
-- Generate 5 unique pickleball athlete images (action shots, urban settings) for each social post instead of reusing `athlete-urban.jpg`
-- Add a `Dialog` modal that opens when clicking a social post card
-- Modal renders a platform-specific frame:
-  - **TikTok**: vertical video placeholder with TikTok UI chrome
-  - **Instagram**: square post with IG header/engagement bar
-  - **YouTube**: 16:9 embed frame with YouTube player UI
-- Modal includes the "Shop the Look" CTA within it
+- **Freakshow Gen 1 OG** — The original. Standard foam core, no sensors. $149. Status: In Stock.
+- **Freakshow Gen 2 Trainer** — Smaller training paddle for drills. Thinner profile, lightweight. $189. Status: In Stock.
+- **Freakshow Gen 3 Haptic Pro** — (existing) $289. Status: Pre-Order.
 
-### 4. Tech Dashboard Visual Cleanup
-- Redesign the dashboard preview section to be crisp and clean — replace the single large image with a structured HUD layout:
-  - A clean paddle silhouette/icon with data overlays (swing arc, impact zone)
-  - Stat cards with proper spacing and refined typography
-  - Add subtle hover-glitch to stat cards
-- Make it feel like an actual app interface, not just a screenshot
+Update `ProductDetail.tsx` to include all three paddles in the `productData` map. Update `ProductShowcase` on the homepage to show all three paddles (not just the Gen 3). Each links to `/product/:slug`.
 
-### 5. Checkout Flow (No Stripe — Mock Apple Pay / Express Checkout)
-- Create a `CheckoutPage.tsx` with:
-  - Order summary sidebar
-  - Express checkout buttons (Apple Pay, Google Pay styled mock buttons)
-  - Standard form: email, shipping address, card number fields
-  - "Place Order" CTA that shows a success toast/confirmation
-- Add cart state management via React Context (`CartContext`):
-  - `addToCart`, `removeFromCart`, `cartItems`, `cartCount`
-  - Cart drawer/sidebar accessible from navbar ShoppingBag icon
-- Wire up all "Add to Cart" buttons across ProductDetail, ApparelDetail, ProductShowcase, FreakFlow, GuerillaDropSection
-- Wire "Buy Now" buttons to navigate to checkout
+For apparel, change the "Sold Out" Tech-Hat to a pre-order item instead. Remove the "Notify" CTA; replace with a pre-order button.
 
-### 6. Waitlist / Early Access CTAs Throughout Site
-- Create an `EarlyAccessModal` component (reusable Dialog):
-  - Email input field
-  - "Sign up with Google" and "Sign up with Apple" mock buttons (icons + styled, no actual OAuth)
-  - "Get Early Access" submit button with success state
-- Place "Join the Waitlist" / "Get Early Access" CTAs in:
-  - Hero section (add a third CTA or replace "Join the Freak-Flow")
-  - Below the product showcase
-  - Tech Dashboard section
-  - Footer (enhance existing email capture)
-  - Future of Freaking page CTA section
-- All trigger the same `EarlyAccessModal`
+### 2. Pre-Order + Freak Member Pricing
 
-### 7. Miscellaneous Polish
-- Ensure all navbar links on sub-pages navigate home first then scroll to section
-- Add route for `/checkout`
-- Make the footer email capture functional (toast confirmation on submit)
+On every product detail page, replace the current "Buy Now — Instant Checkout" pink button with a **Freak Member Pre-Order** CTA:
+
+- Show original price crossed out + 25% discount price (e.g., Gen 3: ~~$289~~ → **$216.75**)
+- Label: "FREAK MEMBERS — PRE-ORDER EXCLUSIVE"
+- Clicking this opens a **Pre-Order Flow page** (`/preorder/:slug`) that:
+  1. Asks for email (or sign in via Google/Apple if authed)
+  2. Shows the discounted price and product summary
+  3. Has shipping address + dummy credit card fields (pre-filled with test data)
+  4. "Confirm Pre-Order" button → saves order to database → shows confirmation
+
+The regular "Add to Cart" at full price remains for standard checkout.
+
+### 3. Enable Lovable Cloud — Auth + Database
+
+**Authentication:**
+- Enable Lovable Cloud with email + Google OAuth
+- Create a simple auth flow: sign-in modal (email/password + Google) accessible from navbar
+- Once signed in, user sees their name/avatar in the navbar instead of a sign-in button
+- The existing EarlyAccessModal email capture also creates an account (or adds to waitlist table)
+
+**Database tables:**
+- `profiles` — user profile (name, avatar_url), linked to `auth.users`
+- `user_roles` — role enum (admin, user), security definer function
+- `waitlist` — email, source (which CTA they came from), created_at
+- `orders` — user_id (nullable for guest), items (jsonb), total, status (pending/confirmed), shipping address, created_at
+- `order_items` — order_id, product_slug, product_name, quantity, unit_price, size
+
+RLS: users can read/insert their own orders and profile. Waitlist is insert-only for authenticated/anon.
+
+### 4. Checkout Flow Upgrade
+
+Enhance `CheckoutPage.tsx`:
+- If user is authenticated, pre-fill email and name from profile
+- Auto-fill dummy test card info (4242 4242 4242 4242, 12/28, 123) so users can "test" the flow
+- On "Place Order", write the order to the `orders` table in Supabase
+- Show order confirmation with a real order ID from the database
+- Apple Pay / Google Pay buttons → same flow (simulated), writes to DB
+
+### 5. Pre-Order Page
+
+New route: `/preorder/:slug`
+
+- Shows the product at Freak Member discount (25% off)
+- If not signed in → prompts sign-in/sign-up first (inline, not a redirect)
+- Shipping form + dummy card (pre-filled)
+- "Confirm Pre-Order" → writes to `orders` table with status `preorder`
+- Confirmation screen with order number, expected ship date, and "You saved $X" messaging
+
+### 6. Wire All CTAs Consistently
+
+- **"Shop the Revolution"** (Hero) → scrolls to hardware section
+- **"Join the Freak-Flow"** (Hero) → opens EarlyAccessModal (writes to `waitlist` table)
+- **"Shop Now"** buttons → navigate to the full product catalog or specific product
+- **All "Add to Cart"** buttons → verified working everywhere, adds to cart context
+- **"Pre-Order Exclusive"** (pink CTA on product pages) → `/preorder/:slug`
+- **Social feed "Shop the Look"** → navigates to the relevant product page
+- **Sold-out items** → show as pre-order instead
+
+### 7. Mobile Responsiveness Pass
+
+- Verify all new pages (pre-order, auth modal, expanded catalog) render cleanly on mobile
+- Bottom-docked nav bar should include cart badge count
+- Checkout and pre-order forms stack properly on small screens
+
+### 8. Social Feeds (Discovery Only — No Implementation)
+
+Social feed integration (TikTok/IG/YouTube API embedding) is noted for a future phase. Current social cards with placeholder images and platform-styled modals remain as-is.
 
 ---
 
 ### Technical Details
 
+**Lovable Cloud setup:**
+- Enable Cloud for auth + database
+- Configure Google OAuth provider
+- Run migrations for `profiles`, `user_roles`, `waitlist`, `orders`, `order_items` tables
+- Set up RLS policies and triggers (auto-create profile on signup)
+
 **New files:**
-- `src/context/CartContext.tsx` — Cart state with React Context + useReducer
-- `src/components/CartDrawer.tsx` — Slide-out cart sidebar using Sheet component
-- `src/components/EarlyAccessModal.tsx` — Waitlist signup dialog
-- `src/components/SocialPostModal.tsx` — Platform-specific social feed viewer
-- `src/pages/CheckoutPage.tsx` — Mock checkout page
-- 5 new athlete images in `src/assets/`
+- `src/pages/PreorderPage.tsx` — Freak Member pre-order checkout
+- `src/components/AuthModal.tsx` — Sign-in/sign-up modal (email + Google)
+- `src/hooks/useAuth.ts` — Auth state hook wrapping Supabase `onAuthStateChange`
+- `src/integrations/supabase/` — auto-generated client + types
 
 **Modified files:**
-- `src/index.css` — Add `glitch-brand` keyframes, `.hover-glitch` utility
-- `src/App.tsx` — Wrap in CartProvider, add `/checkout` route
-- `src/components/Navbar.tsx` — Glitch interval on brand, cart count badge, cart drawer trigger
-- `src/components/FreakFlowSection.tsx` — Unique images per post, click opens SocialPostModal, hover-glitch on cards
-- `src/components/TechDashboard.tsx` — Redesign to clean HUD app mockup, hover-glitch on stat cards
-- `src/components/ProductShowcase.tsx` — Wire Add to Cart, add early access CTA
-- `src/components/GuerillaDropSection.tsx` — hover-glitch on cards
-- `src/components/HeroSection.tsx` — Add early access CTA
-- `src/components/FooterSection.tsx` — Enhanced email capture with toast
-- `src/pages/ProductDetail.tsx` — Wire Add to Cart + Buy Now to checkout, hover-glitch on feature cards
-- `src/pages/ApparelDetail.tsx` — Wire Add to Cart + Buy Now to checkout
-- `src/pages/FutureOfFreaking.tsx` — Add early access CTA
+- `src/pages/ProductDetail.tsx` — Add Gen 1, Gen 2 to product data; replace "Buy Now" with pre-order CTA
+- `src/components/ProductShowcase.tsx` — Show all 3 paddles with links
+- `src/components/GuerillaDropSection.tsx` — Change sold-out hat to pre-order
+- `src/pages/ApparelDetail.tsx` — Pre-order flow for unavailable items
+- `src/pages/CheckoutPage.tsx` — Auto-fill test card, write orders to DB
+- `src/components/Navbar.tsx` — Auth state (show user or sign-in button)
+- `src/components/EarlyAccessModal.tsx` — Write to `waitlist` table on submit
+- `src/App.tsx` — Add `/preorder/:slug` route, wrap with auth provider
+- `src/context/CartContext.tsx` — No major changes, works as-is
+
+**New routes:**
+- `/preorder/:slug` — Pre-order checkout page
 
