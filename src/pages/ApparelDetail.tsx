@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingBag, Ruler } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import apparelCollection from "@/assets/apparel-collection.jpg";
-import athleteUrban from "@/assets/athlete-urban.jpg";
+import renegadeTee from "@/assets/renegade-tee.jpg";
+import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
+import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
 import { useState, useEffect } from "react";
 
 const apparelData: Record<string, {
@@ -20,7 +21,7 @@ const apparelData: Record<string, {
     name: "'Renegade' Oversized Tee",
     tagline: "Underground issue. Oversized drop-shoulder cut with reflective Freakshow branding.",
     price: "$65",
-    image: apparelCollection,
+    image: renegadeTee,
     tag: "DROP 003",
     available: true,
     sizes: ["S", "M", "L", "XL", "XXL"],
@@ -31,7 +32,7 @@ const apparelData: Record<string, {
     name: "'Cyber-Mesh' Shorts",
     tagline: "Performance mesh with 4-way stretch. Laser-cut ventilation panels and hidden zip pocket.",
     price: "$78",
-    image: athleteUrban,
+    image: cyberMeshShorts,
     tag: "DROP 003",
     available: true,
     sizes: ["S", "M", "L", "XL"],
@@ -42,7 +43,7 @@ const apparelData: Record<string, {
     name: "'Freakshow' Tech-Hat",
     tagline: "Structured 6-panel with embedded NFC chip. Tap to unlock exclusive content.",
     price: "$48",
-    image: apparelCollection,
+    image: freakshowTechHat,
     tag: "SOLD OUT",
     available: false,
     sizes: ["One Size"],
