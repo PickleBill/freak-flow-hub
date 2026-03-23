@@ -27,19 +27,24 @@ const CheckoutPage = () => {
   const placeOrder = async (email: string, formData?: FormData) => {
     setSubmitting(true);
     try {
-      const insertData: Record<string, unknown> = {
+      const insertData: any = {
         email,
         status: "confirmed",
         total: cartTotal,
         shipping_address: formData ? {
-            first_name: formData.get("first_name"),
-            last_name: formData.get("last_name"),
-            address: formData.get("address"),
-            city: formData.get("city"),
-            state: formData.get("state"),
-            zip: formData.get("zip"),
-          } : null,
-        })
+          first_name: formData.get("first_name"),
+          last_name: formData.get("last_name"),
+          address: formData.get("address"),
+          city: formData.get("city"),
+          state: formData.get("state"),
+          zip: formData.get("zip"),
+        } : null,
+      };
+      if (user?.id) insertData.user_id = user.id;
+
+      const { data: order, error: orderError } = await supabase
+        .from("orders")
+        .insert(insertData)
         .select()
         .single();
 
