@@ -1,15 +1,51 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Activity, Zap, Target, TrendingUp, ChevronRight } from "lucide-react";
+import { Activity, Zap, Target, TrendingUp, ChevronRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import EarlyAccessModal from "@/components/EarlyAccessModal";
 
 const stats = [
-  { icon: Zap, label: "Swing Velocity", value: "72.4", unit: "mph", trend: "+3.2%", color: "lime" },
-  { icon: Target, label: "Sweet Spot %", value: "84.7", unit: "%", trend: "+5.1%", color: "pink" },
-  { icon: Activity, label: "Health Score", value: "93", unit: "/100", trend: "+2.8%", color: "lime" },
-  { icon: TrendingUp, label: "Sessions", value: "147", unit: "this mo.", trend: "+12%", color: "pink" },
+  { icon: Zap, label: "Swing Velocity", value: 72.4, displayValue: "72.4", unit: "mph", trend: "+3.2%", color: "lime" },
+  { icon: Target, label: "Sweet Spot %", value: 84.7, displayValue: "84.7", unit: "%", trend: "+5.1%", color: "pink" },
+  { icon: Activity, label: "Health Score", value: 93, displayValue: "93", unit: "/100", trend: "+2.8%", color: "lime" },
+  { icon: TrendingUp, label: "Sessions", value: 147, displayValue: "147", unit: "this mo.", trend: "+12%", color: "pink" },
 ];
+
+const useCountUp = (target: number, duration: number, start: boolean, decimals = 0) => {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    let startTime: number;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(parseFloat((eased * target).toFixed(decimals)));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [start, target, duration, decimals]);
+  return value;
+};
+
+const AnimatedStat = ({ stat, isVisible, index }: { stat: typeof stats[0]; isVisible: boolean; index: number }) => {
+  const decimals = stat.displayValue.includes(".") ? 1 : 0;
+  const animatedValue = useCountUp(stat.value, 1500, isVisible, decimals);
+
+  return (
+    <div
+      className={`p-5 bg-card border border-border rounded hud-corner hover-glitch transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      style={{ transitionDelay: `${index * 100}ms` }}
+    >
+      <stat.icon className={`w-5 h-5 mb-3 ${stat.color === "lime" ? "text-neon-lime" : "text-neon-pink"}`} />
+      <div className="text-3xl font-display font-black text-foreground tabular-nums">
+        {isVisible ? animatedValue : 0}<span className="text-sm text-muted-foreground ml-1">{stat.unit}</span>
+      </div>
+      <div className="text-xs text-muted-foreground font-mono uppercase tracking-wider mt-1">{stat.label}</div>
+      <div className={`text-xs font-mono mt-2 ${stat.color === "lime" ? "text-neon-lime" : "text-neon-pink"}`}>{stat.trend}</div>
+    </div>
+  );
+};
 
 const TechDashboard = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -45,18 +81,7 @@ const TechDashboard = () => {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
           {stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className={`p-5 bg-card border border-border rounded hud-corner hover-glitch transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              <stat.icon className={`w-5 h-5 mb-3 ${stat.color === "lime" ? "text-neon-lime" : "text-neon-pink"}`} />
-              <div className="text-3xl font-display font-black text-foreground tabular-nums">
-                {stat.value}<span className="text-sm text-muted-foreground ml-1">{stat.unit}</span>
-              </div>
-              <div className="text-xs text-muted-foreground font-mono uppercase tracking-wider mt-1">{stat.label}</div>
-              <div className={`text-xs font-mono mt-2 ${stat.color === "lime" ? "text-neon-lime" : "text-neon-pink"}`}>{stat.trend}</div>
-            </div>
+            <AnimatedStat key={stat.label} stat={stat} isVisible={isVisible} index={index} />
           ))}
         </div>
 
@@ -74,9 +99,15 @@ const TechDashboard = () => {
                   <div className="text-[10px] text-muted-foreground font-mono">v2.0 — Session Active</div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-neon-lime rounded-full animate-pulse-neon" />
-                <span className="text-[10px] text-neon-lime font-mono uppercase tracking-wider">Live</span>
+              <div className="flex items-center gap-4">
+                <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-neon-pink/10 border border-neon-pink/30 rounded">
+                  <span className="text-[10px] text-muted-foreground font-mono">Analyzed by</span>
+                  <span className="text-[10px] text-neon-pink font-mono font-bold">Courtana AI</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-neon-lime rounded-full animate-pulse-neon" />
+                  <span className="text-[10px] text-neon-lime font-mono uppercase tracking-wider">Live</span>
+                </div>
               </div>
             </div>
 
@@ -85,14 +116,11 @@ const TechDashboard = () => {
               <div className="lg:col-span-1 p-5 bg-surface rounded border border-border/50">
                 <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-4">Impact Map</div>
                 <div className="relative aspect-[3/4] flex items-center justify-center">
-                  {/* SVG Paddle Silhouette with impact zones */}
                   <svg viewBox="0 0 120 180" className="w-full h-full max-w-[160px]">
                     <rect x="30" y="10" width="60" height="80" rx="12" fill="none" stroke="hsl(var(--neon-lime) / 0.3)" strokeWidth="1.5" />
                     <rect x="48" y="90" width="24" height="70" rx="6" fill="none" stroke="hsl(var(--neon-lime) / 0.2)" strokeWidth="1" />
-                    {/* Sweet spot */}
                     <ellipse cx="60" cy="45" rx="18" ry="22" fill="hsl(var(--neon-lime) / 0.15)" stroke="hsl(var(--neon-lime) / 0.4)" strokeWidth="1" />
                     <ellipse cx="60" cy="45" rx="10" ry="12" fill="hsl(var(--neon-lime) / 0.3)" />
-                    {/* Hit markers */}
                     <circle cx="58" cy="42" r="2" fill="hsl(var(--neon-lime))" />
                     <circle cx="63" cy="48" r="2" fill="hsl(var(--neon-lime))" />
                     <circle cx="55" cy="50" r="1.5" fill="hsl(var(--neon-lime) / 0.7)" />
@@ -100,7 +128,6 @@ const TechDashboard = () => {
                     <circle cx="50" cy="55" r="1.5" fill="hsl(var(--neon-pink) / 0.7)" />
                     <circle cx="60" cy="44" r="1" fill="hsl(var(--neon-lime))" />
                     <circle cx="62" cy="41" r="1.5" fill="hsl(var(--neon-lime))" />
-                    {/* Sensor dots on handle */}
                     <circle cx="56" cy="110" r="1.5" fill="hsl(var(--neon-lime) / 0.5)" className="animate-pulse-neon" />
                     <circle cx="64" cy="110" r="1.5" fill="hsl(var(--neon-lime) / 0.5)" className="animate-pulse-neon" />
                     <circle cx="56" cy="130" r="1.5" fill="hsl(var(--neon-lime) / 0.3)" />
@@ -154,7 +181,18 @@ const TechDashboard = () => {
                   </div>
                 </div>
 
-                {/* Wrist Angle */}
+                {/* AI Coaching Insight */}
+                <div className="p-4 bg-neon-pink/5 rounded border border-neon-pink/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="w-3.5 h-3.5 text-neon-pink" />
+                    <span className="text-[10px] text-neon-pink font-mono font-bold uppercase tracking-widest">AI Coaching Insight</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground font-mono leading-relaxed">
+                    Your backhand return generates 23% less force than your forehand. Focus on wrist snap at contact — your haptic data shows grip pressure drops 15% on backhand swings. Try the "Backhand Power" drill in your Courtana curriculum.
+                  </p>
+                </div>
+
+                {/* Bottom stats */}
                 <div className="grid grid-cols-3 gap-4">
                   <div className="p-3 bg-surface rounded border border-border/50 text-center">
                     <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1">Spin Rate</div>

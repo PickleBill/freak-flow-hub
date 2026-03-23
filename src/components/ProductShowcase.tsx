@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Zap, Brain, Vibrate, Shield, Target, Gauge, Crown } from "lucide-react";
+import { Zap, Brain, Vibrate, Shield, Target, Gauge, Crown, Check, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import EarlyAccessModal from "@/components/EarlyAccessModal";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import paddleXray from "@/assets/paddle-xray.jpg";
 import paddleHero from "@/assets/paddle-hero.jpg";
 
@@ -17,6 +18,7 @@ const paddles = [
     desc: "The original. Standard foam core.",
     image: paddleHero,
     color: "lime" as const,
+    badge: null,
   },
   {
     slug: "gen2-trainer",
@@ -27,6 +29,7 @@ const paddles = [
     desc: "Compact face for precision drills.",
     image: paddleXray,
     color: "pink" as const,
+    badge: "MOST POPULAR",
   },
   {
     slug: "gen3-haptic-pro",
@@ -37,6 +40,7 @@ const paddles = [
     desc: "Haptic feedback. Neural-grip sensors.",
     image: paddleHero,
     color: "lime" as const,
+    badge: "FLAGSHIP",
   },
 ];
 
@@ -44,10 +48,28 @@ const features = [
   { icon: Shield, title: "Foam-Core Hybrid", desc: "Max pop, minimal vibration. 16mm injected polymer foam with carbon fiber shell.", color: "lime" as const },
   { icon: Brain, title: "Neural-Grip Sensors", desc: "Real-time swing analytics. Embedded pressure mapping in the handle.", color: "pink" as const },
   { icon: Vibrate, title: "Haptic-Pulse", desc: "Tactile feedback for perfect sweet-spot contact. Feel every strike.", color: "lime" as const },
-  { icon: Target, title: "Impact Mapping", desc: "Visualize exactly where the ball contacts. Heat-mapped precision data.", color: "pink" as const },
+  { icon: Target, title: "Impact Mapping", desc: "Visualize exactly where the ball contacts. Heat-mapped precision data — syncs with your Courtana coaching profile.", color: "pink" as const },
   { icon: Gauge, title: "Velocity Tracking", desc: "Real-time swing speed up to 87mph. Benchmark against the pros.", color: "lime" as const },
   { icon: Zap, title: "Quick-Charge", desc: "30-minute USB-C charge for 40+ hours of sensor uptime.", color: "pink" as const },
 ];
+
+const comparisonRows = [
+  { feature: "Price", gen1: "$149", gen2: "$189", gen3: "$289" },
+  { feature: "Core", gen1: "Polymer Foam", gen2: "Polymer Hybrid", gen3: "Carbon Fiber Hybrid" },
+  { feature: "Weight", gen1: "7.8oz", gen2: "8.0oz", gen3: "8.2oz" },
+  { feature: "Haptic Feedback", gen1: null, gen2: null, gen3: true },
+  { feature: "Neural-Grip Sensors", gen1: null, gen2: null, gen3: "6-Axis" },
+  { feature: "Impact Mapping", gen1: null, gen2: "Basic", gen3: "Full" },
+  { feature: "Smart Court Compatible", gen1: null, gen2: "Basic", gen3: "Full Integration" },
+  { feature: "Charge Time", gen1: "N/A", gen2: "N/A", gen3: "30 min" },
+  { feature: "Sensor Battery", gen1: "N/A", gen2: "N/A", gen3: "40+ hrs" },
+];
+
+const CellValue = ({ value }: { value: string | boolean | null }) => {
+  if (value === null) return <Minus className="w-3.5 h-3.5 text-muted-foreground mx-auto" />;
+  if (value === true) return <Check className="w-4 h-4 text-neon-lime mx-auto" />;
+  return <span>{value}</span>;
+};
 
 const ProductShowcase = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -97,6 +119,11 @@ const ProductShowcase = () => {
                 <div className={`absolute top-3 left-3 px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase border ${paddle.status === "Pre-Order" ? "border-neon-pink/30 bg-neon-pink/10 text-neon-pink" : "border-neon-lime/30 bg-neon-lime/10 text-neon-lime"}`}>
                   {paddle.status}
                 </div>
+                {paddle.badge && (
+                  <div className={`absolute top-3 right-3 px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase border ${paddle.badge === "FLAGSHIP" ? "border-neon-pink/40 bg-neon-pink/15 text-neon-pink" : "border-neon-lime/40 bg-neon-lime/15 text-neon-lime"}`}>
+                    {paddle.badge}
+                  </div>
+                )}
               </div>
               <div className="p-5">
                 <h3 className="text-sm font-display font-bold text-foreground uppercase tracking-wider">{paddle.name}</h3>
@@ -166,6 +193,34 @@ const ProductShowcase = () => {
               </div>
               <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-30" />
             </div>
+          </div>
+        </div>
+
+        {/* Comparison Table */}
+        <div className={`mt-20 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+          <h3 className="text-xl font-display font-black text-foreground text-center mb-2 uppercase tracking-wider">Compare Models</h3>
+          <p className="text-muted-foreground font-mono text-xs text-center mb-8">Side by side. No guesswork.</p>
+          <div className="overflow-x-auto">
+            <Table className="bg-card border border-border rounded">
+              <TableHeader>
+                <TableRow className="border-border hover:bg-transparent">
+                  <TableHead className="font-mono text-xs text-muted-foreground uppercase tracking-widest">Feature</TableHead>
+                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 1 OG</TableHead>
+                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 2 Trainer</TableHead>
+                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 3 Haptic Pro</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {comparisonRows.map((row) => (
+                  <TableRow key={row.feature} className="border-border/50 hover:bg-surface/50">
+                    <TableCell className="font-mono text-xs text-foreground">{row.feature}</TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground text-center"><CellValue value={row.gen1} /></TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground text-center"><CellValue value={row.gen2} /></TableCell>
+                    <TableCell className="font-mono text-xs text-foreground text-center"><CellValue value={row.gen3} /></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         </div>
 

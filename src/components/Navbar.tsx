@@ -7,6 +7,14 @@ import CartDrawer from "@/components/CartDrawer";
 import AuthModal from "@/components/AuthModal";
 import { useAuth } from "@/hooks/useAuth";
 
+const navItems = [
+  { label: "Hardware", id: "hardware" },
+  { label: "Drops", id: "drops" },
+  { label: "Flow", id: "flow" },
+  { label: "Ecosystem", id: "ecosystem" },
+  { label: "Data", id: "data" },
+];
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [glitchActive, setGlitchActive] = useState(false);
@@ -54,12 +62,7 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            {[
-              { label: "Hardware", id: "hardware" },
-              { label: "Drops", id: "drops" },
-              { label: "Flow", id: "flow" },
-              { label: "Data", id: "data" },
-            ].map((item) => (
+            {navItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollTo(item.id)}
@@ -103,12 +106,7 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden bg-card border-t border-border">
             <div className="px-6 py-4 space-y-3">
-              {[
-                { label: "Hardware", id: "hardware" },
-                { label: "Drops", id: "drops" },
-                { label: "Flow", id: "flow" },
-                { label: "Data", id: "data" },
-              ].map((item) => (
+              {navItems.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => scrollTo(item.id)}

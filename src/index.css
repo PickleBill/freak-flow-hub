@@ -291,3 +291,17 @@
   background: hsl(var(--neon-lime) / 0.3);
   border-radius: 3px;
 }
+
+/* Neon flicker for FREAKY text */
+@keyframes neon-flicker {
+  0%, 100% { opacity: 1; text-shadow: 0 0 8px hsl(var(--neon-lime) / 0.6), 0 0 32px hsl(var(--neon-lime) / 0.2); }
+  8% { opacity: 0.85; text-shadow: 0 0 4px hsl(var(--neon-lime) / 0.3), 0 0 16px hsl(var(--neon-lime) / 0.1); }
+  9% { opacity: 1; text-shadow: 0 0 8px hsl(var(--neon-lime) / 0.6), 0 0 32px hsl(var(--neon-lime) / 0.2); }
+  50% { opacity: 1; }
+  51% { opacity: 0.9; text-shadow: 0 0 6px hsl(var(--neon-lime) / 0.4), 0 0 20px hsl(var(--neon-lime) / 0.15); }
+  52% { opacity: 1; text-shadow: 0 0 8px hsl(var(--neon-lime) / 0.6), 0 0 32px hsl(var(--neon-lime) / 0.2); }
+}
+
+.neon-flicker {
+  animation: neon-flicker 4s ease-in-out infinite;
+}

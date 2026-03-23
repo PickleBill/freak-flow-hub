@@ -28,7 +28,7 @@ const HeroSection = () => {
       <div className="absolute bottom-6 left-6 w-16 h-16 border-b border-l border-neon-lime/30" />
       <div className="absolute bottom-6 right-6 w-16 h-16 border-b border-r border-neon-lime/30" />
       <div className="absolute top-1/4 right-12 text-neon-lime/30 font-mono text-xs hidden lg:block animate-pulse-neon">
-        SYS::ONLINE<br />FREQ::47.3GHz<br />STATUS::ARMED
+        SYS::ONLINE<br />HAPTIC::ARMED<br />SENSORS::6-AXIS
       </div>
 
       <div className="container relative z-10 px-6 lg:px-12">
@@ -41,7 +41,7 @@ const HeroSection = () => {
           <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black leading-[0.9] tracking-tight mb-6 transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
             <span className="text-foreground">THE FUTURE</span><br />
             <span className="text-foreground">IS </span>
-            <span className="text-neon-lime neon-text-lime">FREAKY</span>
+            <span className="text-neon-lime neon-text-lime neon-flicker">FREAKY</span>
             <span className="text-neon-pink neon-text-pink">.</span>
           </h1>
 
@@ -59,11 +59,16 @@ const HeroSection = () => {
             </Button>
           </div>
 
+          <p className={`text-[11px] text-muted-foreground font-mono mt-4 transition-all duration-700 delay-650 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+            Free shipping on orders $200+ · 30-day returns · USAP compliance pending
+          </p>
+
           <div className={`flex gap-8 mt-16 pt-8 border-t border-border/50 transition-all duration-700 delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
             {[
               { value: "16mm", label: "Foam Core" },
               { value: "47.3g", label: "Handle Weight" },
               { value: "8.2oz", label: "Total Mass" },
+              { value: "6-Axis", label: "Neural-Grip™" },
             ].map((stat) => (
               <div key={stat.label}>
                 <div className="text-2xl font-display font-bold text-neon-lime">{stat.value}</div>

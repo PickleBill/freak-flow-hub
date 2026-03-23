@@ -1,11 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Zap, Send, MapPin, Users, Shield } from "lucide-react";
+import { Zap, Send, MapPin, Users, Shield, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import EarlyAccessModal from "@/components/EarlyAccessModal";
+
+const TikTokIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.43v-7.15a8.16 8.16 0 005.58 2.17v-3.44a4.85 4.85 0 01-3.77-1.83V6.69h3.77z" />
+  </svg>
+);
+
+const XIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 const FooterSection = () => {
   const [email, setEmail] = useState("");
@@ -86,10 +98,25 @@ const FooterSection = () => {
               Pickleball<span className="text-neon-lime">Freakshow</span> © 2026
             </span>
           </div>
-          <div className="flex gap-6 text-xs font-mono text-muted-foreground">
-            <a href="#" className="hover:text-neon-lime transition-colors">Privacy</a>
-            <a href="#" className="hover:text-neon-lime transition-colors">Terms</a>
-            <a href="#" className="hover:text-neon-lime transition-colors">Returns</a>
+
+          <div className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground">
+            <span>Part of the</span>
+            <a href="https://courtana.com" target="_blank" rel="noopener noreferrer" className="text-neon-pink hover:text-neon-lime transition-colors">
+              Courtana Ecosystem
+            </a>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="flex gap-6 text-xs font-mono text-muted-foreground">
+              <a href="#" className="hover:text-neon-lime transition-colors">Privacy</a>
+              <a href="#" className="hover:text-neon-lime transition-colors">Terms</a>
+              <a href="#" className="hover:text-neon-lime transition-colors">Returns</a>
+            </div>
+            <div className="flex gap-3">
+              <a href="#" className="text-muted-foreground hover:text-neon-lime transition-colors"><Instagram className="w-4 h-4" /></a>
+              <a href="#" className="text-muted-foreground hover:text-neon-lime transition-colors"><TikTokIcon /></a>
+              <a href="#" className="text-muted-foreground hover:text-neon-lime transition-colors"><XIcon /></a>
+            </div>
           </div>
         </div>
       </div>
