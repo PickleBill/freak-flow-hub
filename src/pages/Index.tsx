@@ -17,20 +17,20 @@ const Index = () => {
         <div id="hardware">
           <ProductShowcase />
         </div>
-        <div id="reviews">
-          <ReviewSection />
-        </div>
-        <div id="flow">
-          <FreakFlowSection />
-        </div>
         <div id="ecosystem">
           <CourtanaIntegration />
+        </div>
+        <div id="data">
+          <TechDashboard />
         </div>
         <div id="drops">
           <GuerillaDropSection />
         </div>
-        <div id="data">
-          <TechDashboard />
+        <div id="flow">
+          <FreakFlowSection />
+        </div>
+        <div id="reviews">
+          <ReviewSection />
         </div>
       </main>
       <FooterSection />
