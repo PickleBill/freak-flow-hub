@@ -193,7 +193,7 @@ const TechDashboard = () => {
                 </div>
 
                 {/* Bottom stats */}
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="p-3 bg-surface rounded border border-border/50 text-center">
                     <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1">Spin Rate</div>
                     <div className="text-lg font-display font-bold text-neon-pink tabular-nums">1,847</div>

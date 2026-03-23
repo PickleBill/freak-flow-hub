@@ -75,14 +75,20 @@ const FooterSection = () => {
               <p className="text-xs text-muted-foreground font-mono mt-1">Status: Coming Soon. We play by the rules — then break them.</p>
             </div>
           </div>
-          <div className="flex items-start gap-3 p-4 bg-surface rounded border border-border cursor-pointer hover:neon-border-pink transition-all">
+          <div
+            className="flex items-start gap-3 p-4 bg-surface rounded border border-border cursor-pointer hover:neon-border-pink transition-all"
+            onClick={() => toast({ title: "🤝 Affiliate program launching Q3 2026.", description: "Drop your email in the Freak-List to get notified." })}
+          >
             <Users className="w-5 h-5 text-neon-pink flex-shrink-0 mt-0.5" />
             <div>
               <div className="text-sm font-display font-bold text-foreground uppercase tracking-wider">Affiliate Program</div>
               <p className="text-xs text-muted-foreground font-mono mt-1">Join the Freakshow roster. Earn on every freak you convert.</p>
             </div>
           </div>
-          <div className="flex items-start gap-3 p-4 bg-surface rounded border border-border cursor-pointer hover:neon-border-lime transition-all">
+          <div
+            className="flex items-start gap-3 p-4 bg-surface rounded border border-border cursor-pointer hover:neon-border-lime transition-all"
+            onClick={() => toast({ title: "📍 Underground map coming soon.", description: "For now, all orders ship direct from Freakshow HQ." })}
+          >
             <MapPin className="w-5 h-5 text-neon-lime flex-shrink-0 mt-0.5" />
             <div>
               <div className="text-sm font-display font-bold text-foreground uppercase tracking-wider">Underground Map</div>
@@ -108,14 +114,14 @@ const FooterSection = () => {
 
           <div className="flex items-center gap-6">
             <div className="flex gap-6 text-xs font-mono text-muted-foreground">
-              <a href="#" className="hover:text-neon-lime transition-colors">Privacy</a>
-              <a href="#" className="hover:text-neon-lime transition-colors">Terms</a>
-              <a href="#" className="hover:text-neon-lime transition-colors">Returns</a>
+              <button onClick={() => toast({ title: "Coming Soon", description: "Legal pages are being finalized. Email support@pickleballfreakshow.com for questions." })} className="hover:text-neon-lime transition-colors">Privacy</button>
+              <button onClick={() => toast({ title: "Coming Soon", description: "Legal pages are being finalized. Email support@pickleballfreakshow.com for questions." })} className="hover:text-neon-lime transition-colors">Terms</button>
+              <button onClick={() => toast({ title: "Coming Soon", description: "Legal pages are being finalized. Email support@pickleballfreakshow.com for questions." })} className="hover:text-neon-lime transition-colors">Returns</button>
             </div>
             <div className="flex gap-3">
-              <a href="#" className="text-muted-foreground hover:text-neon-lime transition-colors"><Instagram className="w-4 h-4" /></a>
-              <a href="#" className="text-muted-foreground hover:text-neon-lime transition-colors"><TikTokIcon /></a>
-              <a href="#" className="text-muted-foreground hover:text-neon-lime transition-colors"><XIcon /></a>
+              <a href="https://instagram.com/pickleballfreakshow" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-neon-lime transition-colors"><Instagram className="w-4 h-4" /></a>
+              <a href="https://tiktok.com/@pickleballfreakshow" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-neon-lime transition-colors"><TikTokIcon /></a>
+              <a href="https://x.com/pickleballfreakshow" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-neon-lime transition-colors"><XIcon /></a>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Activity, Brain, TrendingUp } from "lucide-react";
+import { Activity, Brain, TrendingUp, Zap, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const features = [
   {
@@ -23,6 +24,7 @@ const features = [
 const CourtanaIntegration = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -66,13 +68,62 @@ const CourtanaIntegration = () => {
           ))}
         </div>
 
+        {/* Data Pipeline Visual */}
+        <div className={`mb-12 transition-all duration-700 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <div className="text-center mb-6">
+            <span className="text-[10px] font-mono text-neon-pink/70 uppercase tracking-widest">DATA PIPELINE — LIVE</span>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 max-w-3xl mx-auto">
+            <div className="flex items-center gap-3 px-5 py-4 bg-card border border-neon-lime/30 rounded min-w-[160px]">
+              <div className="w-8 h-8 rounded bg-neon-lime/10 border border-neon-lime/30 flex items-center justify-center">
+                <Zap className="w-4 h-4 text-neon-lime" />
+              </div>
+              <div>
+                <div className="text-xs font-display font-bold text-foreground uppercase tracking-wider">Gen 3 Paddle</div>
+                <div className="text-[10px] text-muted-foreground font-mono">Impact, spin, velocity</div>
+              </div>
+            </div>
+
+            <span className="text-neon-lime/50 font-mono text-sm hidden sm:block">→→→</span>
+            <span className="text-neon-lime/50 font-mono text-sm sm:hidden rotate-90">→→→</span>
+
+            <div className="flex items-center gap-3 px-5 py-4 bg-card border border-neon-pink/30 rounded min-w-[160px]">
+              <div className="w-8 h-8 rounded bg-neon-pink/10 border border-neon-pink/30 flex items-center justify-center">
+                <Brain className="w-4 h-4 text-neon-pink" />
+              </div>
+              <div>
+                <div className="text-xs font-display font-bold text-foreground uppercase tracking-wider">Courtana AI</div>
+                <div className="text-[10px] text-muted-foreground font-mono">Analysis + coaching</div>
+              </div>
+            </div>
+
+            <span className="text-neon-pink/50 font-mono text-sm hidden sm:block">→→→</span>
+            <span className="text-neon-pink/50 font-mono text-sm sm:hidden rotate-90">→→→</span>
+
+            <div className="flex items-center gap-3 px-5 py-4 bg-card border border-neon-lime/30 rounded min-w-[160px]">
+              <div className="w-8 h-8 rounded bg-neon-lime/10 border border-neon-lime/30 flex items-center justify-center">
+                <User className="w-4 h-4 text-neon-lime" />
+              </div>
+              <div>
+                <div className="text-xs font-display font-bold text-foreground uppercase tracking-wider">Your Profile</div>
+                <div className="text-[10px] text-muted-foreground font-mono">Curriculum + progress</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-wrap justify-center gap-4">
           <Button variant="neonLime" size="lg" asChild>
             <a href="https://courtana.com" target="_blank" rel="noopener noreferrer">
               Explore Courtana Coaching →
             </a>
           </Button>
-          <Button variant="ghost" size="lg" className="text-neon-lime hover:text-neon-lime/80">
+          <Button
+            variant="ghost"
+            size="lg"
+            className="text-neon-lime hover:text-neon-lime/80 active:scale-95 transition-transform"
+            onClick={() => toast({ title: "🔌 Paddle sync launches with the Freak-Pro app.", description: "Join the waitlist for early access." })}
+          >
             Already on Courtana? Connect your paddle →
           </Button>
         </div>

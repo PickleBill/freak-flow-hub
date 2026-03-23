@@ -63,7 +63,7 @@ const HeroSection = () => {
             Free shipping on orders $200+ · 30-day returns · USAP compliance pending
           </p>
 
-          <div className={`flex gap-8 mt-16 pt-8 border-t border-border/50 transition-all duration-700 delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+          <div className={`flex flex-wrap gap-4 sm:gap-8 mt-16 pt-8 border-t border-border/50 transition-all duration-700 delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
             {[
               { value: "16mm", label: "Foam Core" },
               { value: "47.3g", label: "Handle Weight" },
