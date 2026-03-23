@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingBag, Ruler } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import EarlyAccessModal from "@/components/EarlyAccessModal";
 import renegadeTee from "@/assets/renegade-tee.jpg";
 import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
 import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
@@ -10,6 +12,7 @@ const apparelData: Record<string, {
   name: string;
   tagline: string;
   price: string;
+  priceNum: number;
   image: string;
   tag: string;
   available: boolean;
@@ -21,6 +24,7 @@ const apparelData: Record<string, {
     name: "'Renegade' Oversized Tee",
     tagline: "Underground issue. Oversized drop-shoulder cut with reflective Freakshow branding.",
     price: "$65",
+    priceNum: 65,
     image: renegadeTee,
     tag: "DROP 003",
     available: true,
@@ -32,6 +36,7 @@ const apparelData: Record<string, {
     name: "'Cyber-Mesh' Shorts",
     tagline: "Performance mesh with 4-way stretch. Laser-cut ventilation panels and hidden zip pocket.",
     price: "$78",
+    priceNum: 78,
     image: cyberMeshShorts,
     tag: "DROP 003",
     available: true,
@@ -43,6 +48,7 @@ const apparelData: Record<string, {
     name: "'Freakshow' Tech-Hat",
     tagline: "Structured 6-panel with embedded NFC chip. Tap to unlock exclusive content.",
     price: "$48",
+    priceNum: 48,
     image: freakshowTechHat,
     tag: "SOLD OUT",
     available: false,
@@ -57,6 +63,8 @@ const ApparelDetail = () => {
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
+  const { addToCart, toggleCart } = useCart();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -76,6 +84,22 @@ const ApparelDetail = () => {
     );
   }
 
+  const handleAddToCart = () => {
+    addToCart({
+      id: `${slug}-${selectedSize}`,
+      name: product.name,
+      price: product.priceNum,
+      priceLabel: product.price,
+      image: product.image,
+      size: selectedSize || undefined,
+    });
+  };
+
+  const handleBuyNow = () => {
+    handleAddToCart();
+    navigate("/checkout");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
@@ -83,10 +107,10 @@ const ApparelDetail = () => {
           <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-neon-lime transition-colors text-sm font-mono">
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
-          <span className="font-display text-xs tracking-widest uppercase text-foreground">
+          <span className="font-display text-xs tracking-widest uppercase text-foreground cursor-pointer" onClick={() => navigate("/")}>
             Pickleball<span className="text-neon-lime">Freakshow</span>
           </span>
-          <Button variant="neonLime" size="sm">
+          <Button variant="neonLime" size="sm" onClick={toggleCart}>
             <ShoppingBag className="w-4 h-4 mr-1" /> Cart
           </Button>
         </div>
@@ -95,7 +119,6 @@ const ApparelDetail = () => {
       <main className="pt-14">
         <div className="container px-6 lg:px-12 py-12 lg:py-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Image */}
             <div className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
               <div className="relative aspect-[4/5] bg-card rounded border border-border overflow-hidden">
                 <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
@@ -108,7 +131,6 @@ const ApparelDetail = () => {
               </div>
             </div>
 
-            {/* Info */}
             <div className={`transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
               <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-neon-pink/30 bg-neon-pink/5 text-neon-pink text-xs font-mono tracking-widest uppercase">
                 <span className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse-neon" />
@@ -120,7 +142,6 @@ const ApparelDetail = () => {
               <p className="text-muted-foreground font-mono text-sm mb-6">{product.tagline}</p>
               <div className="text-4xl font-display font-black text-neon-lime mb-8">{product.price}</div>
 
-              {/* Size selector */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-display font-bold text-foreground uppercase tracking-widest">Select Size</span>
@@ -143,21 +164,23 @@ const ApparelDetail = () => {
 
               {product.available ? (
                 <>
-                  <Button variant="neonLime" size="xl" className="w-full mb-4" disabled={!selectedSize}>
+                  <Button variant="neonLime" size="xl" className="w-full mb-4" disabled={!selectedSize} onClick={handleAddToCart}>
                     <ShoppingBag className="w-5 h-5 mr-2" />
                     {selectedSize ? `Add to Cart — ${product.price}` : "Select a Size"}
                   </Button>
-                  <Button variant="neonPinkOutline" size="lg" className="w-full">
+                  <Button variant="neonPinkOutline" size="lg" className="w-full mb-4" disabled={!selectedSize} onClick={handleBuyNow}>
                     Buy Now — Instant Checkout
                   </Button>
                 </>
               ) : (
-                <Button variant="neonPinkOutline" size="xl" className="w-full" disabled>
-                  Sold Out — Notify Me
+                <Button variant="neonPinkOutline" size="xl" className="w-full mb-4" onClick={() => setShowEarlyAccess(true)}>
+                  Sold Out — Notify Me When Back
                 </Button>
               )}
+              <Button variant="ghost" size="sm" className="w-full text-muted-foreground hover:text-neon-lime" onClick={() => setShowEarlyAccess(true)}>
+                Join the Freak-List for early drop access →
+              </Button>
 
-              {/* Details */}
               <div className="mt-12 space-y-6">
                 <div>
                   <h3 className="text-sm font-display font-bold text-foreground uppercase tracking-widest mb-3">Details</h3>
@@ -179,6 +202,8 @@ const ApparelDetail = () => {
           </div>
         </div>
       </main>
+
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
     </div>
   );
 };

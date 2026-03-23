@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import EarlyAccessModal from "@/components/EarlyAccessModal";
 import paddleHero from "@/assets/paddle-hero.jpg";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -52,11 +54,8 @@ const HeroSection = () => {
             <Button variant="neonLime" size="xl" onClick={() => navigate("/product/gen3-haptic-pro")}>
               Shop the Revolution
             </Button>
-            <Button variant="neonPinkOutline" size="xl" onClick={() => {
-              const el = document.getElementById("flow");
-              el?.scrollIntoView({ behavior: "smooth" });
-            }}>
-              Join the Freak-Flow
+            <Button variant="neonPinkOutline" size="xl" onClick={() => setShowEarlyAccess(true)}>
+              Get Early Access
             </Button>
           </div>
 
@@ -75,6 +74,8 @@ const HeroSection = () => {
         </div>
       </div>
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent" />
+
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
     </section>
   );
 };

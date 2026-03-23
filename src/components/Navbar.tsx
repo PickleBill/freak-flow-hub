@@ -1,17 +1,41 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingBag, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import CartDrawer from "@/components/CartDrawer";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [glitchActive, setGlitchActive] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { toggleCart, cartCount } = useCart();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGlitchActive(true);
+      setTimeout(() => setGlitchActive(false), 500);
+    }, 15000);
+    // trigger once on mount after 2s
+    const initial = setTimeout(() => {
+      setGlitchActive(true);
+      setTimeout(() => setGlitchActive(false), 500);
+    }, 2000);
+    return () => { clearInterval(interval); clearTimeout(initial); };
+  }, []);
 
   const scrollTo = (id: string) => {
     setIsOpen(false);
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        el?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    } else {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -21,7 +45,7 @@ const Navbar = () => {
         <div className="container px-6 lg:px-12 flex items-center justify-between h-14">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
             <Zap className="w-5 h-5 text-neon-lime" />
-            <span className="font-display font-bold text-sm tracking-widest uppercase text-foreground">
+            <span className={`font-display font-bold text-sm tracking-widest uppercase text-foreground ${glitchActive ? "glitch-active" : ""}`}>
               Pickleball<span className="text-neon-lime">Freakshow</span>
             </span>
           </div>
@@ -44,9 +68,12 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="text-foreground hover:text-neon-lime">
+            <button onClick={toggleCart} className="relative text-foreground hover:text-neon-lime transition-colors p-2">
               <ShoppingBag className="w-4 h-4" />
-            </Button>
+              {cartCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-neon-lime text-background text-[10px] font-mono font-bold rounded-full flex items-center justify-center">{cartCount}</span>
+              )}
+            </button>
             <Button variant="neonLime" size="sm" className="hidden md:flex" onClick={() => navigate("/product/gen3-haptic-pro")}>
               Shop Now
             </Button>
@@ -91,12 +118,17 @@ const Navbar = () => {
             <Menu className="w-4 h-4" />
             <span className="text-[10px] font-mono uppercase tracking-wider">Flow</span>
           </button>
-          <button className="flex flex-col items-center gap-0.5 text-neon-lime">
+          <button onClick={toggleCart} className="relative flex flex-col items-center gap-0.5 text-neon-lime">
             <ShoppingBag className="w-4 h-4" />
             <span className="text-[10px] font-mono uppercase tracking-wider">Cart</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 right-1 w-4 h-4 bg-neon-lime text-background text-[10px] font-mono font-bold rounded-full flex items-center justify-center">{cartCount}</span>
+            )}
           </button>
         </div>
       </div>
+
+      <CartDrawer />
     </>
   );
 };

@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingBag, Zap, Shield, Brain, Vibrate, Target, Gauge, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import EarlyAccessModal from "@/components/EarlyAccessModal";
 import paddleXray from "@/assets/paddle-xray.jpg";
 import paddleHero from "@/assets/paddle-hero.jpg";
 import { useState, useEffect } from "react";
@@ -9,6 +11,7 @@ const productData: Record<string, {
   name: string;
   tagline: string;
   price: string;
+  priceNum: number;
   images: string[];
   features: { icon: typeof Zap; title: string; desc: string; color: "lime" | "pink" }[];
   specs: { label: string; value: string }[];
@@ -18,6 +21,7 @@ const productData: Record<string, {
     name: "Freakshow Gen 3 Haptic Pro",
     tagline: "The paddle that plays back. Haptic feedback meets foam-core hybrid tech.",
     price: "$289",
+    priceNum: 289,
     images: [paddleHero, paddleXray],
     features: [
       { icon: Shield, title: "Foam-Core Hybrid", desc: "16mm injected polymer foam with carbon fiber shell. Max pop, minimal vibration.", color: "lime" },
@@ -50,6 +54,8 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const [activeImage, setActiveImage] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
+  const { addToCart, toggleCart } = useCart();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,18 +75,38 @@ const ProductDetail = () => {
     );
   }
 
+  const handleAddToCart = () => {
+    addToCart({
+      id: slug || "gen3-haptic-pro",
+      name: product.name,
+      price: product.priceNum,
+      priceLabel: product.price,
+      image: product.images[0],
+    });
+  };
+
+  const handleBuyNow = () => {
+    addToCart({
+      id: slug || "gen3-haptic-pro",
+      name: product.name,
+      price: product.priceNum,
+      priceLabel: product.price,
+      image: product.images[0],
+    });
+    navigate("/checkout");
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="container px-6 lg:px-12 flex items-center justify-between h-14">
           <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-neon-lime transition-colors text-sm font-mono">
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
-          <span className="font-display text-xs tracking-widest uppercase text-foreground">
+          <span className="font-display text-xs tracking-widest uppercase text-foreground cursor-pointer" onClick={() => navigate("/")}>
             Pickleball<span className="text-neon-lime">Freakshow</span>
           </span>
-          <Button variant="neonLime" size="sm">
+          <Button variant="neonLime" size="sm" onClick={toggleCart}>
             <ShoppingBag className="w-4 h-4 mr-1" /> Cart
           </Button>
         </div>
@@ -89,7 +115,6 @@ const ProductDetail = () => {
       <main className="pt-14">
         <div className="container px-6 lg:px-12 py-12 lg:py-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Images */}
             <div className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
               <div className="relative aspect-square bg-card rounded border border-border overflow-hidden mb-4">
                 <img src={product.images[activeImage]} alt={product.name} className="w-full h-full object-cover" />
@@ -108,7 +133,6 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Info */}
             <div className={`transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
               <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-neon-lime/30 bg-neon-lime/5 text-neon-lime text-xs font-mono tracking-widest uppercase">
                 <span className="w-1.5 h-1.5 bg-neon-lime rounded-full animate-pulse-neon" />
@@ -120,14 +144,16 @@ const ProductDetail = () => {
               <p className="text-muted-foreground font-mono text-sm mb-6">{product.tagline}</p>
               <div className="text-4xl font-display font-black text-neon-lime mb-8">{product.price}</div>
 
-              <Button variant="neonLime" size="xl" className="w-full mb-4">
+              <Button variant="neonLime" size="xl" className="w-full mb-4" onClick={handleAddToCart}>
                 <ShoppingBag className="w-5 h-5 mr-2" /> Add to Cart — {product.price}
               </Button>
-              <Button variant="neonPinkOutline" size="lg" className="w-full">
+              <Button variant="neonPinkOutline" size="lg" className="w-full mb-4" onClick={handleBuyNow}>
                 Buy Now — Instant Checkout
               </Button>
+              <Button variant="ghost" size="sm" className="w-full text-muted-foreground hover:text-neon-lime" onClick={() => setShowEarlyAccess(true)}>
+                Join the Waitlist for Gen 4 →
+              </Button>
 
-              {/* Specs table */}
               <div className="mt-12">
                 <h3 className="text-sm font-display font-bold text-foreground uppercase tracking-widest mb-4">Technical Specs</h3>
                 <div className="grid grid-cols-2 gap-x-6 gap-y-3">
@@ -142,7 +168,6 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* Features */}
           <div className="mt-24">
             <h2 className="text-3xl font-display font-black text-foreground mb-12 text-center">
               THE <span className="text-neon-lime neon-text-lime">TECH</span> INSIDE
@@ -151,7 +176,7 @@ const ProductDetail = () => {
               {product.features.map((feature, index) => (
                 <div
                   key={feature.title}
-                  className={`p-6 bg-card border border-border rounded hud-corner transition-all duration-500 hover:neon-border-lime ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                  className={`p-6 bg-card border border-border rounded hud-corner hover-glitch transition-all duration-500 hover:neon-border-lime ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
                   style={{ transitionDelay: `${600 + index * 80}ms` }}
                 >
                   <div className={`w-10 h-10 rounded flex items-center justify-center border mb-4 ${feature.color === "lime" ? "border-neon-lime/30 bg-neon-lime/5 text-neon-lime" : "border-neon-pink/30 bg-neon-pink/5 text-neon-pink"}`}>
@@ -164,14 +189,13 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* Reviews */}
           <div className="mt-24">
             <h2 className="text-3xl font-display font-black text-foreground mb-12 text-center">
               FREAK <span className="text-neon-pink neon-text-pink">REVIEWS</span>
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
               {product.reviews.map((review, i) => (
-                <div key={i} className="p-6 bg-card border border-border rounded">
+                <div key={i} className="p-6 bg-card border border-border rounded hover-glitch">
                   <div className="flex gap-1 mb-3">
                     {Array.from({ length: review.rating }).map((_, j) => (
                       <Star key={j} className="w-4 h-4 text-neon-lime fill-neon-lime" />
@@ -185,6 +209,8 @@ const ProductDetail = () => {
           </div>
         </div>
       </main>
+
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
     </div>
   );
 };

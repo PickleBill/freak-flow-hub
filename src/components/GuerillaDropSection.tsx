@@ -2,14 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Clock, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
 import renegadeTee from "@/assets/renegade-tee.jpg";
 import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
 import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
 
 const products = [
-  { name: "'Renegade' Oversized Tee", price: "$65", status: "available" as const, tag: "DROP 003", sizes: "S — XXL", slug: "renegade-tee", image: renegadeTee },
-  { name: "'Cyber-Mesh' Shorts", price: "$78", status: "available" as const, tag: "DROP 003", sizes: "S — XL", slug: "cyber-mesh-shorts", image: cyberMeshShorts },
-  { name: "'Freakshow' Tech-Hat", price: "$48", status: "soldout" as const, tag: "SOLD OUT", sizes: "One Size", slug: "freakshow-tech-hat", image: freakshowTechHat },
+  { name: "'Renegade' Oversized Tee", price: "$65", priceNum: 65, status: "available" as const, tag: "DROP 003", sizes: "S — XXL", slug: "renegade-tee", image: renegadeTee },
+  { name: "'Cyber-Mesh' Shorts", price: "$78", priceNum: 78, status: "available" as const, tag: "DROP 003", sizes: "S — XL", slug: "cyber-mesh-shorts", image: cyberMeshShorts },
+  { name: "'Freakshow' Tech-Hat", price: "$48", priceNum: 48, status: "soldout" as const, tag: "SOLD OUT", sizes: "One Size", slug: "freakshow-tech-hat", image: freakshowTechHat },
 ];
 
 const CountdownTimer = () => {
@@ -31,7 +32,7 @@ const CountdownTimer = () => {
   return (
     <div className="flex items-center gap-1 font-mono text-neon-pink text-sm">
       <Clock className="w-3.5 h-3.5 mr-1" />
-      <span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.h)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.m)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded">{pad(time.s)}</span>
+      <span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.h)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.m)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.s)}</span>
     </div>
   );
 };
@@ -40,6 +41,7 @@ const GuerillaDropSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -49,6 +51,17 @@ const GuerillaDropSection = () => {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
+
+  const handleAddToCart = (e: React.MouseEvent, product: typeof products[0]) => {
+    e.stopPropagation();
+    addToCart({
+      id: product.slug,
+      name: product.name,
+      price: product.priceNum,
+      priceLabel: product.price,
+      image: product.image,
+    });
+  };
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
@@ -71,7 +84,7 @@ const GuerillaDropSection = () => {
               <div className="relative aspect-[4/5] rounded overflow-hidden border border-border bg-card">
                 <div className="grid grid-rows-3 h-full">
                   {products.map((product, i) => (
-                    <div key={i} className="relative overflow-hidden cursor-pointer group/img" onClick={() => navigate(`/apparel/${product.slug}`)}>
+                    <div key={i} className="relative overflow-hidden cursor-pointer group/img hover-glitch" onClick={() => navigate(`/apparel/${product.slug}`)}>
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" />
                       <div className="absolute inset-0 bg-background/40 group-hover/img:bg-background/20 transition-colors" />
                       <div className="absolute bottom-2 left-3 text-[10px] font-mono text-neon-lime tracking-widest uppercase">{product.name}</div>
@@ -86,7 +99,7 @@ const GuerillaDropSection = () => {
             {products.map((product, index) => (
               <div
                 key={product.name}
-                className={`group p-6 bg-card border border-border rounded hover:neon-border-pink transition-all duration-500 cursor-pointer ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+                className={`group p-6 bg-card border border-border rounded hover:neon-border-pink hover-glitch transition-all duration-500 cursor-pointer ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
                 style={{ transitionDelay: `${200 + index * 120}ms` }}
                 onClick={() => navigate(`/apparel/${product.slug}`)}
               >
@@ -109,8 +122,8 @@ const GuerillaDropSection = () => {
                     </Button>
                   </div>
                 ) : (
-                  <Button variant="neonLime" size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); navigate(`/apparel/${product.slug}`); }}>
-                    <ShoppingBag className="w-4 h-4 mr-2" /> View & Add to Cart
+                  <Button variant="neonLime" size="sm" className="w-full" onClick={(e) => handleAddToCart(e, product)}>
+                    <ShoppingBag className="w-4 h-4 mr-2" /> Add to Cart — {product.price}
                   </Button>
                 )}
               </div>
