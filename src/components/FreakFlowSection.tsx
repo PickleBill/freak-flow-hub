@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Play, ShoppingBag, Heart, MessageCircle } from "lucide-react";
+import { Play, ShoppingBag, Heart, MessageCircle, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import SocialPostModal from "@/components/SocialPostModal";
@@ -38,6 +38,7 @@ const socialPosts = [
   { platform: "YouTube", handle: "FreakshowTV", caption: "GEN 3 HAPTIC PRO — FULL REVIEW | Is this the future of pickleball?", likes: "1.4M", comments: "23K", image: athlete3, product: "Gen 3 Haptic Pro", price: "$289", tall: false },
   { platform: "TikTok", handle: "@dink.master", caption: "The Neural-Grip sensors are INSANE. My swing data is 📈", likes: "567K", comments: "3.4K", image: athlete4, product: "Cyber-Mesh Shorts", price: "$78", tall: true },
   { platform: "Instagram", handle: "@freakshow.pb", caption: "Drop 003 incoming. Are you ready? 👁️", likes: "156K", comments: "2.1K", image: athlete5, product: "Freakshow Tech-Hat", price: "$48", tall: false },
+  { platform: "Instagram", handle: "@courtana.tech", caption: "Your Freakshow paddle data now syncs with your Courtana coaching profile. AI analysis meets next-gen hardware. 🧠🏓", likes: "42K", comments: "1.8K", image: athlete3, product: "Gen 3 Haptic Pro", price: "$289", tall: false },
 ];
 
 const FreakFlowSection = () => {
@@ -95,6 +96,10 @@ const FreakFlowSection = () => {
           <p className="text-muted-foreground font-mono text-sm mt-3 max-w-lg">
             Shop the exact gear from our athletes' viral clips. The feed is the store.
           </p>
+          <div className="flex items-center gap-2 mt-3">
+            <Activity className="w-3.5 h-3.5 text-neon-lime animate-pulse-neon" />
+            <span className="text-xs text-neon-lime font-mono">{socialPosts.length} new posts today</span>
+          </div>
         </div>
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">

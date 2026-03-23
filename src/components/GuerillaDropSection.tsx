@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Clock, ShoppingBag, Crown } from "lucide-react";
+import { Clock, ShoppingBag, Crown, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
+import EarlyAccessModal from "@/components/EarlyAccessModal";
 import renegadeTee from "@/assets/renegade-tee.jpg";
 import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
 import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
@@ -14,7 +15,7 @@ const products = [
 ];
 
 const CountdownTimer = () => {
-  const [time, setTime] = useState({ h: 2, m: 47, s: 33 });
+  const [time, setTime] = useState({ h: 23, m: 47, s: 33 });
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((prev) => {
@@ -30,15 +31,19 @@ const CountdownTimer = () => {
   }, []);
   const pad = (n: number) => n.toString().padStart(2, "0");
   return (
-    <div className="flex items-center gap-1 font-mono text-neon-pink text-sm">
-      <Clock className="w-3.5 h-3.5 mr-1" />
-      <span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.h)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.m)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.s)}</span>
+    <div>
+      <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1.5">Drop closes in</div>
+      <div className="flex items-center gap-1 font-mono text-neon-pink text-sm">
+        <Clock className="w-3.5 h-3.5 mr-1" />
+        <span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.h)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.m)}</span>:<span className="bg-neon-pink/10 px-2 py-0.5 rounded tabular-nums">{pad(time.s)}</span>
+      </div>
     </div>
   );
 };
 
 const GuerillaDropSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
@@ -128,9 +133,27 @@ const GuerillaDropSection = () => {
                 )}
               </div>
             ))}
+
+            {/* Sold out past drop */}
+            <div className={`p-6 bg-card/50 border border-border/50 rounded transition-all duration-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`} style={{ transitionDelay: "560ms" }}>
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <span className="inline-block px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase mb-2 bg-muted text-muted-foreground border border-border">
+                    DROP 002 — SOLD OUT
+                  </span>
+                  <h3 className="text-lg font-display font-bold text-muted-foreground">'Volt' Performance Hoodie</h3>
+                </div>
+                <AlertTriangle className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
+              </div>
+              <Button variant="ghost" size="sm" className="w-full text-neon-pink hover:text-neon-pink/80" onClick={(e) => { e.stopPropagation(); setShowEarlyAccess(true); }}>
+                Join Waitlist for Restock
+              </Button>
+            </div>
           </div>
         </div>
       </div>
+
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} source="restock-waitlist" />
     </section>
   );
 };
