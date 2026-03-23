@@ -182,13 +182,13 @@ const PreorderPage = () => {
                   <div>
                     <label className="text-xs font-display font-bold text-foreground uppercase tracking-widest mb-2 block">Card Information</label>
                     <div className="space-y-3">
-                      <Input placeholder="4242 4242 4242 4242" defaultValue="4242 4242 4242 4242" className="bg-surface border-border font-mono" required />
+                      <Input placeholder="Card number" className="bg-surface border-border font-mono" required />
                       <div className="grid grid-cols-2 gap-3">
-                        <Input placeholder="12 / 28" defaultValue="12 / 28" className="bg-surface border-border font-mono" required />
-                        <Input placeholder="123" defaultValue="123" className="bg-surface border-border font-mono" required />
+                        <Input placeholder="MM / YY" className="bg-surface border-border font-mono" required />
+                        <Input placeholder="CVV" className="bg-surface border-border font-mono" required />
                       </div>
                     </div>
-                    <p className="text-[10px] text-muted-foreground font-mono mt-2">Test mode — no real charges will be made.</p>
+                    <p className="text-[10px] text-muted-foreground font-mono mt-2">Stripe integration coming soon. Your order will be reserved and confirmed — you'll be contacted before any charge.</p>
                   </div>
                   <Button variant="neonLime" size="xl" className="w-full" type="submit" disabled={submitting}>
                     <ShoppingBag className="w-5 h-5 mr-2" />

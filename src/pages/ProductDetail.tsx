@@ -256,6 +256,47 @@ const ProductDetail = () => {
               ))}
             </div>
           </div>
+
+          {/* Cross-sell: Other Paddles */}
+          <div className="mt-24">
+            <h2 className="text-2xl font-display font-black text-foreground mb-2 text-center">
+              COMPARE THE <span className="text-neon-lime neon-text-lime">LINEUP</span>
+            </h2>
+            <p className="text-xs text-muted-foreground font-mono text-center mb-10">Every freak has a favorite. Find yours.</p>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {Object.entries(productData).filter(([s]) => s !== slug).map(([otherSlug, p]) => (
+                <div
+                  key={otherSlug}
+                  onClick={() => navigate(`/product/${otherSlug}`)}
+                  className="group p-4 bg-card border border-border rounded cursor-pointer hover:border-neon-lime/50 transition-all"
+                >
+                  <div className="aspect-square rounded overflow-hidden border border-border mb-3">
+                    <img src={p.images[0]} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  </div>
+                  <h3 className="text-xs font-display font-bold text-foreground uppercase tracking-wider mb-1">{p.name}</h3>
+                  <p className="text-xs text-muted-foreground font-mono mb-2 line-clamp-2">{p.tagline}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-display font-bold text-neon-lime">{p.price}</span>
+                    <span className={`text-[10px] font-mono uppercase tracking-wider ${p.status === "preorder" ? "text-neon-pink" : "text-neon-lime"}`}>
+                      {p.status === "preorder" ? "Pre-Order" : "In Stock"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Continue Shopping CTA */}
+          <div className="mt-16 text-center pb-12">
+            <div className="inline-flex flex-col sm:flex-row gap-3">
+              <Button variant="neonLime" size="lg" onClick={() => navigate("/#hardware")}>
+                <ShoppingBag className="w-4 h-4 mr-2" /> Browse All Hardware
+              </Button>
+              <Button variant="neonPinkOutline" size="lg" onClick={() => navigate("/#drops")}>
+                Shop Guerilla Drops
+              </Button>
+            </div>
+          </div>
         </div>
       </main>
 
