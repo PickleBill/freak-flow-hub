@@ -201,8 +201,26 @@ const ProductShowcase = () => {
           </div>
         </div>
 
-        {/* Comparison Table */}
+        {/* Radar Chart */}
         <div className={`mt-20 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+          <div className="flex justify-center mb-8">
+            <svg viewBox="0 0 300 300" className="w-64 h-64">
+              {[0.2, 0.4, 0.6, 0.8, 1].map((r, i) => (
+                <polygon key={i} points={[0,1,2,3,4].map(j => { const a = (j * 72 - 90) * Math.PI/180; const d = r * 110; return `${150+d*Math.cos(a)},${150+d*Math.sin(a)}`; }).join(" ")} fill="none" stroke="hsl(var(--border))" strokeWidth="0.5" />
+              ))}
+              {["Pop","Control","Tech","Feel","Value"].map((label, i) => { const a = (i * 72 - 90) * Math.PI/180; return <text key={label} x={150 + 125*Math.cos(a)} y={150 + 125*Math.sin(a)} textAnchor="middle" dominantBaseline="middle" className="fill-muted-foreground" style={{ fontSize: 9, fontFamily: "var(--font-mono)" }}>{label.toUpperCase()}</text>; })}
+              <polygon points={[[6,0],[7,1],[1,2],[7,3],[9,4]].map(([v,i]) => { const a = (i * 72 - 90) * Math.PI/180; const d = (v/10) * 110; return `${150+d*Math.cos(a)},${150+d*Math.sin(a)}`; }).join(" ")} fill="hsl(var(--neon-lime) / 0.1)" stroke="hsl(var(--neon-lime) / 0.4)" strokeWidth="1" />
+              <polygon points={[[7,0],[9,1],[3,2],[8,3],[7,4]].map(([v,i]) => { const a = (i * 72 - 90) * Math.PI/180; const d = (v/10) * 110; return `${150+d*Math.cos(a)},${150+d*Math.sin(a)}`; }).join(" ")} fill="hsl(var(--neon-pink) / 0.1)" stroke="hsl(var(--neon-pink) / 0.4)" strokeWidth="1" />
+              <polygon points={[[9,0],[8,1],[10,2],[9,3],[6,4]].map(([v,i]) => { const a = (i * 72 - 90) * Math.PI/180; const d = (v/10) * 110; return `${150+d*Math.cos(a)},${150+d*Math.sin(a)}`; }).join(" ")} fill="hsl(var(--neon-lime) / 0.15)" stroke="hsl(var(--neon-lime))" strokeWidth="1.5" />
+              <rect x="20" y="260" width="8" height="2" fill="hsl(var(--neon-lime) / 0.4)" /><text x="32" y="262" style={{ fontSize: 8, fontFamily: "var(--font-mono)" }} className="fill-muted-foreground" dominantBaseline="middle">Gen 1</text>
+              <rect x="80" y="260" width="8" height="2" fill="hsl(var(--neon-pink) / 0.4)" /><text x="92" y="262" style={{ fontSize: 8, fontFamily: "var(--font-mono)" }} className="fill-muted-foreground" dominantBaseline="middle">Gen 2</text>
+              <rect x="140" y="260" width="8" height="2" fill="hsl(var(--neon-lime))" /><text x="152" y="262" style={{ fontSize: 8, fontFamily: "var(--font-mono)" }} className="fill-muted-foreground" dominantBaseline="middle">Gen 3</text>
+            </svg>
+          </div>
+        </div>
+
+        {/* Comparison Table */}
+        <div className={`mt-12 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
           <h3 className="text-xl font-display font-black text-foreground text-center mb-2 uppercase tracking-wider">Compare Models</h3>
           <p className="text-muted-foreground font-mono text-xs text-center mb-8">Side by side. No guesswork.</p>
           <div className="overflow-x-auto">
