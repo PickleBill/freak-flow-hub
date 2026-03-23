@@ -113,7 +113,7 @@ const ProductShowcase = () => {
               key={paddle.slug}
               className={`group bg-card border border-border rounded overflow-hidden hover-glitch cursor-pointer transition-all duration-500 hover:neon-border-lime ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ transitionDelay: `${index * 120}ms` }}
-              onClick={() => navigate(`/product/${paddle.slug}`)}
+              onClick={() => setQuickViewProduct(paddle)}
             >
               <div className="relative aspect-square overflow-hidden">
                 <img src={paddle.image} alt={paddle.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
