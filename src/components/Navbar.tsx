@@ -9,9 +9,10 @@ import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { label: "Hardware", id: "hardware" },
-  { label: "Drops", id: "drops" },
+  { label: "Reviews", id: "reviews" },
   { label: "Flow", id: "flow" },
   { label: "Ecosystem", id: "ecosystem" },
+  { label: "Drops", id: "drops" },
   { label: "Data", id: "data" },
 ];
 
