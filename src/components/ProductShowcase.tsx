@@ -146,6 +146,11 @@ const ProductShowcase = () => {
           ))}
         </div>
 
+        {/* Bridge text */}
+        <p className="text-center text-sm sm:text-base text-muted-foreground font-mono max-w-2xl mx-auto mb-12">
+          Most paddles are dumb. Ours have 6-axis sensors, haptic feedback, and a brain that talks to your AI coach.
+        </p>
+
         {/* Gen 3 Feature Deep-Dive */}
         <div className="mb-12">
           <h3 className="text-2xl font-display font-black text-foreground text-center mb-2">

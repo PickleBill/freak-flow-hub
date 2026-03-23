@@ -74,16 +74,21 @@ const ReviewSection = () => {
           {reviews.map((review, index) => (
             <div
               key={review.handle}
-              className={`p-6 bg-card border border-border rounded hover-glitch transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              className={`p-6 bg-card border border-border rounded relative overflow-hidden group hover-glitch transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
+              {/* Hover glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-lime/0 via-neon-lime/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              {/* Neon quote mark */}
+              <span className="absolute top-3 right-4 text-4xl font-display text-neon-lime/10 leading-none select-none pointer-events-none">"</span>
+
               <StarRating rating={review.stars} />
-              <p className="text-sm text-foreground/80 font-mono leading-relaxed mt-4 mb-5">
+              <p className="text-sm text-foreground/80 font-mono leading-relaxed mt-4 mb-5 relative z-10">
                 "{review.quote}"
               </p>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between relative z-10">
                 <span className="text-xs text-neon-lime font-mono">{review.handle}</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 bg-neon-lime/10 text-neon-lime border border-neon-lime/20 rounded">
+                <span className="text-xs font-bold font-mono px-2 py-0.5 bg-neon-lime/10 text-neon-lime border border-neon-lime/20 rounded">
                   {review.dupr} DUPR
                 </span>
               </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingBag, Zap, User, LogOut } from "lucide-react";
+import { Menu, X, ShoppingBag, Zap, User, LogOut, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
@@ -9,9 +9,10 @@ import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { label: "Hardware", id: "hardware" },
-  { label: "Drops", id: "drops" },
+  { label: "Reviews", id: "reviews" },
   { label: "Flow", id: "flow" },
   { label: "Ecosystem", id: "ecosystem" },
+  { label: "Drops", id: "drops" },
   { label: "Data", id: "data" },
 ];
 
@@ -148,6 +149,10 @@ const Navbar = () => {
             {cartCount > 0 && (
               <span className="absolute -top-1 right-1 w-4 h-4 bg-neon-lime text-background text-[10px] font-mono font-bold rounded-full flex items-center justify-center">{cartCount}</span>
             )}
+          </button>
+          <button onClick={() => scrollTo("drops")} className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-neon-pink transition-colors">
+            <Crown className="w-4 h-4" />
+            <span className="text-[10px] font-mono uppercase tracking-wider">Drops</span>
           </button>
         </div>
       </div>

@@ -142,7 +142,7 @@ const TechDashboard = () => {
 
               {/* Swing Data */}
               <div className="lg:col-span-2 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="p-4 bg-surface rounded border border-border/50">
                     <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-2">Avg Swing Speed</div>
                     <div className="text-3xl font-display font-black text-neon-lime tabular-nums">72.4<span className="text-sm text-muted-foreground ml-1">mph</span></div>
@@ -193,7 +193,7 @@ const TechDashboard = () => {
                 </div>
 
                 {/* Bottom stats */}
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="p-3 bg-surface rounded border border-border/50 text-center">
                     <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest mb-1">Spin Rate</div>
                     <div className="text-lg font-display font-bold text-neon-pink tabular-nums">1,847</div>
