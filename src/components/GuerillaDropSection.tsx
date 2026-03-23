@@ -104,8 +104,8 @@ const GuerillaDropSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div className={`relative transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
               <div className="relative aspect-[4/5] rounded overflow-hidden border border-border bg-card">
-                <div className="grid grid-rows-3 h-full">
-                  {products.map((product, i) => (
+                <div className="grid grid-cols-2 grid-rows-2 h-full">
+                  {products.slice(0, 4).map((product, i) => (
                     <div key={i} className="relative overflow-hidden cursor-pointer group/img hover-glitch" onClick={() => navigate(`/apparel/${product.slug}`)}>
                       <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105" />
                       <div className="absolute inset-0 bg-background/40 group-hover/img:bg-background/20 transition-colors" />
