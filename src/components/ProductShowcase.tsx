@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Zap, Brain, Vibrate, Shield, Target, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
+import EarlyAccessModal from "@/components/EarlyAccessModal";
 import paddleXray from "@/assets/paddle-xray.jpg";
+import paddleHero from "@/assets/paddle-hero.jpg";
 
 const features = [
   { icon: Shield, title: "Foam-Core Hybrid", desc: "Max pop, minimal vibration. 16mm injected polymer foam with carbon fiber shell.", color: "lime" as const },
@@ -16,8 +19,10 @@ const features = [
 const ProductShowcase = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeView, setActiveView] = useState<"exterior" | "xray">("exterior");
+  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,6 +32,16 @@ const ProductShowcase = () => {
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: "gen3-haptic-pro",
+      name: "Freakshow Gen 3 Haptic Pro",
+      price: 289,
+      priceLabel: "$289",
+      image: paddleHero,
+    });
+  };
 
   return (
     <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
@@ -68,7 +83,7 @@ const ProductShowcase = () => {
             {features.map((feature, index) => (
               <div
                 key={feature.title}
-                className={`group flex gap-4 p-4 rounded border border-transparent hover:border-border hover:bg-surface/50 transition-all duration-500 cursor-default ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                className={`group flex gap-4 p-4 rounded border border-transparent hover:border-border hover:bg-surface/50 hover-glitch transition-all duration-500 cursor-default ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
                 style={{ transitionDelay: `${300 + index * 80}ms` }}
               >
                 <div className={`flex-shrink-0 w-10 h-10 rounded flex items-center justify-center border ${feature.color === "lime" ? "border-neon-lime/30 bg-neon-lime/5 text-neon-lime" : "border-neon-pink/30 bg-neon-pink/5 text-neon-pink"}`}>
@@ -80,14 +95,19 @@ const ProductShowcase = () => {
                 </div>
               </div>
             ))}
-            <div className="pt-6 pl-4">
-              <Button variant="neonLime" size="lg" onClick={() => navigate("/product/gen3-haptic-pro")}>
+            <div className="pt-6 pl-4 flex flex-wrap gap-3">
+              <Button variant="neonLime" size="lg" onClick={handleAddToCart}>
                 Add to Cart — $289
+              </Button>
+              <Button variant="neonPinkOutline" size="lg" onClick={() => setShowEarlyAccess(true)}>
+                Join the Waitlist
               </Button>
             </div>
           </div>
         </div>
       </div>
+
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
     </section>
   );
 };

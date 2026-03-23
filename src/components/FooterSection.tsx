@@ -3,10 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { Zap, Send, MapPin, Users, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import EarlyAccessModal from "@/components/EarlyAccessModal";
 
 const FooterSection = () => {
   const [email, setEmail] = useState("");
+  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      toast({ title: "You're on the list! 🔥", description: "We'll hit you with drops before anyone else." });
+      setEmail("");
+    }
+  };
 
   return (
     <footer className="relative border-t border-border bg-card py-16 lg:py-24">
@@ -18,18 +30,25 @@ const FooterSection = () => {
           <p className="text-sm text-muted-foreground font-mono mb-6">
             Early access to Gen 3 drops. Exclusive gear. No spam — just heat.
           </p>
-          <div className="flex gap-2">
+          <form onSubmit={handleSubmit} className="flex gap-2">
             <Input
               type="email"
               placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-surface border-border text-foreground font-mono placeholder:text-muted-foreground focus:neon-border-lime"
+              required
             />
-            <Button variant="neonLime" size="default">
+            <Button variant="neonLime" size="default" type="submit">
               <Send className="w-4 h-4" />
             </Button>
-          </div>
+          </form>
+          <button
+            onClick={() => setShowEarlyAccess(true)}
+            className="mt-4 text-xs text-neon-pink font-mono hover:text-neon-lime transition-colors underline underline-offset-4"
+          >
+            Or sign up with Google / Apple →
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
@@ -70,6 +89,8 @@ const FooterSection = () => {
           </div>
         </div>
       </div>
+
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
     </footer>
   );
 };

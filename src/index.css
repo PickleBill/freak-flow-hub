@@ -224,6 +224,54 @@
   animation: reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+/* Glitch brand — triggered via JS class toggle */
+@keyframes glitch-brand {
+  0%, 100% { transform: translate(0); filter: none; }
+  10% { transform: translate(-3px, 1px) skewX(-2deg); filter: hue-rotate(90deg); }
+  20% { transform: translate(2px, -1px) skewX(1deg); filter: hue-rotate(-90deg); }
+  30% { transform: translate(-1px, 2px); filter: hue-rotate(45deg) saturate(2); }
+  40% { transform: translate(3px, -2px) skewX(-1deg); filter: hue-rotate(-45deg); }
+  50% { transform: translate(-2px, 0); filter: none; }
+  60% { transform: translate(1px, 1px) skewX(2deg); filter: hue-rotate(90deg); }
+  70% { transform: translate(0); filter: none; }
+}
+
+.glitch-active {
+  animation: glitch-brand 0.5s ease-in-out;
+}
+
+/* Subtle hover glitch for cards */
+.hover-glitch {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.hover-glitch:hover {
+  animation: hover-glitch-subtle 0.3s ease-in-out;
+}
+
+@keyframes hover-glitch-subtle {
+  0%, 100% { transform: translate(0); filter: none; }
+  25% { transform: translate(-1px, 0.5px); filter: hue-rotate(15deg); }
+  50% { transform: translate(1px, -0.5px); filter: hue-rotate(-15deg); }
+  75% { transform: translate(-0.5px, -0.5px); filter: none; }
+}
+
+/* Animation utilities */
+@keyframes scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out;
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }

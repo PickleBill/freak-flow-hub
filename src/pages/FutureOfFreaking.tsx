@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Zap, Brain, Activity, Target, TrendingUp, Wifi, Smartphone, Trophy, Users, Globe, Sparkles, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import EarlyAccessModal from "@/components/EarlyAccessModal";
 import { useState, useEffect, useRef } from "react";
 
 const roadmapPhases = [
@@ -49,6 +50,7 @@ const FutureOfFreaking = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [visiblePhases, setVisiblePhases] = useState<Set<number>>(new Set());
+  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,13 +78,12 @@ const FutureOfFreaking = () => {
 
   return (
     <div className="min-h-screen bg-background" ref={sectionRef}>
-      {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="container px-6 lg:px-12 flex items-center justify-between h-14">
           <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-muted-foreground hover:text-neon-lime transition-colors text-sm font-mono">
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
-          <span className="font-display text-xs tracking-widest uppercase text-foreground">
+          <span className="font-display text-xs tracking-widest uppercase text-foreground cursor-pointer" onClick={() => navigate("/")}>
             Pickleball<span className="text-neon-lime">Freakshow</span>
           </span>
           <Button variant="neonLime" size="sm" onClick={() => navigate("/")}>
@@ -92,14 +93,12 @@ const FutureOfFreaking = () => {
       </div>
 
       <main className="pt-14">
-        {/* Hero */}
         <section className="relative py-24 lg:py-40 overflow-hidden">
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-b from-neon-lime/[0.03] via-transparent to-neon-pink/[0.03]" />
             <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-10" />
           </div>
 
-          {/* HUD corners */}
           <div className="absolute top-6 left-6 w-20 h-20 border-t border-l border-neon-lime/20" />
           <div className="absolute top-6 right-6 w-20 h-20 border-t border-r border-neon-pink/20" />
           <div className="absolute bottom-6 left-6 w-20 h-20 border-b border-l border-neon-pink/20" />
@@ -125,11 +124,10 @@ const FutureOfFreaking = () => {
               AI coaching. Biometric data. Cross-court multiplayer. The underground is going global.
             </p>
 
-            {/* Vision stats */}
             <div className={`flex justify-center gap-12 lg:gap-20 transition-all duration-700 delay-600 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
               {visionStats.map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="text-3xl lg:text-4xl font-display font-black text-neon-lime">{stat.value}</div>
+                  <div className="text-3xl lg:text-4xl font-display font-black text-neon-lime tabular-nums">{stat.value}</div>
                   <div className="text-xs text-foreground font-mono uppercase tracking-wider mt-1">{stat.label}</div>
                   <div className="text-[10px] text-muted-foreground font-mono mt-0.5">{stat.sub}</div>
                 </div>
@@ -138,7 +136,6 @@ const FutureOfFreaking = () => {
           </div>
         </section>
 
-        {/* Roadmap */}
         <section className="py-24 lg:py-32">
           <div className="container px-6 lg:px-12">
             <div className="text-center mb-20">
@@ -155,7 +152,7 @@ const FutureOfFreaking = () => {
                 <div
                   key={phase.phase}
                   data-phase={index}
-                  className={`relative p-8 lg:p-12 bg-card border border-border rounded hud-corner transition-all duration-700 ${visiblePhases.has(index) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+                  className={`relative p-8 lg:p-12 bg-card border border-border rounded hud-corner hover-glitch transition-all duration-700 ${visiblePhases.has(index) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
                   <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-12">
@@ -184,7 +181,6 @@ const FutureOfFreaking = () => {
           </div>
         </section>
 
-        {/* CTA */}
         <section className="py-24 lg:py-32 border-t border-border">
           <div className="container px-6 lg:px-12 text-center">
             <h2 className="text-3xl md:text-5xl font-display font-black text-foreground mb-6">
@@ -195,16 +191,18 @@ const FutureOfFreaking = () => {
               Be first in line. Join the Freak-List to get early access to every phase as it drops.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="neonLime" size="xl" onClick={() => navigate("/")}>
-                Shop the Revolution <ChevronRight className="w-5 h-5 ml-1" />
+              <Button variant="neonLime" size="xl" onClick={() => setShowEarlyAccess(true)}>
+                Get Early Access <ChevronRight className="w-5 h-5 ml-1" />
               </Button>
-              <Button variant="neonPinkOutline" size="xl" onClick={() => navigate("/")}>
-                Join the Freak-Flow
+              <Button variant="neonPinkOutline" size="xl" onClick={() => navigate("/product/gen3-haptic-pro")}>
+                Shop the Revolution
               </Button>
             </div>
           </div>
         </section>
       </main>
+
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
     </div>
   );
 };
