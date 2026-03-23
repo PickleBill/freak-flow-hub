@@ -84,7 +84,7 @@ const CourtanaIntegration = () => {
               </div>
             </div>
 
-            <span className="text-neon-lime/50 font-mono text-sm hidden sm:block">→→→</span>
+            <svg className="hidden sm:block w-12 h-6 text-neon-lime/50 animate-pulse" viewBox="0 0 48 24" fill="none"><path d="M2 12h40M34 4l8 8-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             <span className="text-neon-lime/50 font-mono text-sm sm:hidden rotate-90">→→→</span>
 
             <div className="flex items-center gap-3 px-5 py-4 bg-card border border-neon-pink/30 rounded min-w-[160px]">
