@@ -7,11 +7,19 @@ import EarlyAccessModal from "@/components/EarlyAccessModal";
 import renegadeTee from "@/assets/renegade-tee.jpg";
 import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
 import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
+import tropicalCourtShirt from "@/assets/tropical-court-shirt.jpg";
+import chubbyFreakPants from "@/assets/chubby-freak-pants.jpg";
+import electroBallPickleballs from "@/assets/electro-ball-pickleballs.jpg";
+import neuralNetCourtBag from "@/assets/neural-net-court-bag.jpg";
 
 const products = [
   { name: "'Renegade' Oversized Tee", price: "$65", priceNum: 65, status: "available" as const, tag: "DROP 003", sizes: "S — XXL", slug: "renegade-tee", image: renegadeTee },
   { name: "'Cyber-Mesh' Shorts", price: "$78", priceNum: 78, status: "available" as const, tag: "DROP 003", sizes: "S — XL", slug: "cyber-mesh-shorts", image: cyberMeshShorts },
   { name: "'Freakshow' Tech-Hat", price: "$48", priceNum: 48, status: "preorder" as const, tag: "PRE-ORDER", sizes: "One Size", slug: "freakshow-tech-hat", image: freakshowTechHat },
+  { name: "'Freakshow' Tropical Court Shirt", price: "$85", priceNum: 85, status: "available" as const, tag: "DROP 004", sizes: "S — XXL", slug: "tropical-court-shirt", image: tropicalCourtShirt },
+  { name: "'Chubby Freak' Wide-Leg Pants", price: "$92", priceNum: 92, status: "available" as const, tag: "DROP 004", sizes: "S — XXL", slug: "chubby-freak-pants", image: chubbyFreakPants },
+  { name: "'Electro-Ball' LED Pickleballs", price: "$34", priceNum: 34, status: "available" as const, tag: "NEW GEAR", sizes: "3-Pack", slug: "electro-ball-pickleballs", image: electroBallPickleballs },
+  { name: "'Neural Net' Court Bag", price: "$120", priceNum: 120, status: "preorder" as const, tag: "PRE-ORDER", sizes: "One Size", slug: "neural-net-court-bag", image: neuralNetCourtBag },
 ];
 
 const DROP_END = new Date("2026-04-20T23:59:59Z").getTime();
