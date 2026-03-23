@@ -205,7 +205,7 @@ const ProductDetail = () => {
 
               <div className="mt-12">
                 <h3 className="text-sm font-display font-bold text-foreground uppercase tracking-widest mb-4">Technical Specs</h3>
-                <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
                   {product.specs.map((spec) => (
                     <div key={spec.label} className="flex justify-between border-b border-border/50 pb-2">
                       <span className="text-xs text-muted-foreground font-mono uppercase tracking-wider">{spec.label}</span>
