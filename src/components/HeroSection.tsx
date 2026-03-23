@@ -106,7 +106,7 @@ const HeroSection = () => {
           </div>
 
           <p className={`text-[11px] text-muted-foreground font-mono mt-4 transition-all duration-700 delay-650 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-            Free shipping on orders $200+ · 30-day returns · USAP compliance pending
+            Free shipping on orders $200+ · 30-day returns · USAP submission Q3 2026
           </p>
 
           <div className={`flex flex-wrap items-center gap-4 sm:gap-6 mt-8 transition-all duration-700 delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>

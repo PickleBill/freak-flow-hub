@@ -152,6 +152,9 @@ const ProductShowcase = () => {
         <p className="text-center text-sm sm:text-base text-muted-foreground font-mono max-w-2xl mx-auto mb-12">
           Most paddles are dumb. Ours have 6-axis sensors, haptic feedback, and a brain that talks to your AI coach.
         </p>
+        <p className="text-center text-xs text-muted-foreground font-mono max-w-xl mx-auto mt-4">
+          <span className="text-neon-lime">Gen 3 vs. the field:</span> More sensor axes than Franklin, Ben Johns, or Joola. The only paddle with real-time haptic coaching feedback.
+        </p>
 
         {/* Gen 3 Feature Deep-Dive */}
         <div className="mb-12">

@@ -72,7 +72,7 @@ const FooterSection = () => {
             <Shield className="w-5 h-5 text-neon-lime flex-shrink-0 mt-0.5" />
             <div>
               <div className="text-sm font-display font-bold text-foreground uppercase tracking-wider">USAP Compliance</div>
-              <p className="text-xs text-muted-foreground font-mono mt-1">Status: Coming Soon. We play by the rules — then break them.</p>
+              <p className="text-xs text-muted-foreground font-mono mt-1">USAP submission filed Q3 2026. Gen 3 certified for sanctioned play upon approval.</p>
             </div>
           </div>
           <div
