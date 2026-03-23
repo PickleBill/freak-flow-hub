@@ -7,6 +7,7 @@ import renegadeTee from "@/assets/renegade-tee.jpg";
 import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
 import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
 import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const apparelData: Record<string, {
   name: string;
@@ -65,6 +66,7 @@ const ApparelDetail = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showEarlyAccess, setShowEarlyAccess] = useState(false);
   const { addToCart, toggleCart } = useCart();
+  const { toast } = useToast();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -148,7 +150,7 @@ const ApparelDetail = () => {
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-display font-bold text-foreground uppercase tracking-widest">Select Size</span>
-                  <button className="flex items-center gap-1 text-xs text-muted-foreground font-mono hover:text-neon-lime transition-colors">
+                  <button onClick={() => toast({ title: "Size Guide", description: "Renegade Tee: S=36\", M=38\", L=40\", XL=42\", XXL=44\" chest. Cyber-Mesh Shorts: S=28-30\", M=32-34\", L=36-38\", XL=40-42\" waist. When in doubt, size up — all pieces are oversized cut." })} className="flex items-center gap-1 text-xs text-muted-foreground font-mono hover:text-neon-lime transition-colors">
                     <Ruler className="w-3 h-3" /> Size Guide
                   </button>
                 </div>
