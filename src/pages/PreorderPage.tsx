@@ -59,22 +59,23 @@ const PreorderPage = () => {
       const form = e.target as HTMLFormElement;
       const formData = new FormData(form);
 
+      const insertData: Record<string, unknown> = {
+        user_id: user.id,
+        email: user.email || formData.get("email") as string,
+        status: "preorder",
+        total: discountPrice,
+        shipping_address: {
+          first_name: formData.get("first_name"),
+          last_name: formData.get("last_name"),
+          address: formData.get("address"),
+          city: formData.get("city"),
+          state: formData.get("state"),
+          zip: formData.get("zip"),
+        },
+      };
       const { data: order, error: orderError } = await supabase
         .from("orders")
-        .insert({
-          user_id: user.id,
-          email: user.email || formData.get("email") as string,
-          status: "preorder",
-          total: discountPrice,
-          shipping_address: {
-            first_name: formData.get("first_name"),
-            last_name: formData.get("last_name"),
-            address: formData.get("address"),
-            city: formData.get("city"),
-            state: formData.get("state"),
-            zip: formData.get("zip"),
-          },
-        })
+        .insert(insertData as any)
         .select()
         .single();
 

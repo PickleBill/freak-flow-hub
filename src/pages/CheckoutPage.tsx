@@ -27,14 +27,11 @@ const CheckoutPage = () => {
   const placeOrder = async (email: string, formData?: FormData) => {
     setSubmitting(true);
     try {
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .insert({
-          user_id: user?.id || null,
-          email,
-          status: "confirmed",
-          total: cartTotal,
-          shipping_address: formData ? {
+      const insertData: Record<string, unknown> = {
+        email,
+        status: "confirmed",
+        total: cartTotal,
+        shipping_address: formData ? {
             first_name: formData.get("first_name"),
             last_name: formData.get("last_name"),
             address: formData.get("address"),
