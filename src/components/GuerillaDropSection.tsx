@@ -162,7 +162,7 @@ const GuerillaDropSection = () => {
         </div>
       </div>
 
-      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} source="restock-waitlist" />
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} source="restock-volt-hoodie" />
     </section>
   );
 };

@@ -257,6 +257,7 @@ const ProductShowcase = () => {
       </div>
 
       <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
+      <ProductQuickView product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
     </section>
   );
 };

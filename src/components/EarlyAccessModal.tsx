@@ -72,9 +72,11 @@ const EarlyAccessModal = ({ open, onClose, source = "general" }: EarlyAccessModa
                     <Zap className="w-3 h-3" /> EXCLUSIVE ACCESS
                   </div>
                   <h3 className="text-2xl font-display font-black text-foreground mb-2">
-                    JOIN THE <span className="text-neon-lime neon-text-lime">FREAK-LIST</span>
+                    JOIN THE <span className="text-neon-lime neon-text-lime">{source.startsWith("restock-") ? "RESTOCK LIST" : "FREAK-LIST"}</span>
                   </h3>
-                  <p className="text-xs text-muted-foreground font-mono">Early drops. Exclusive gear. Gen 3 priority. No spam.</p>
+                  <p className="text-xs text-muted-foreground font-mono">
+                    {source.startsWith("restock-") ? "Be first to know when the Volt Hoodie drops again." : "Early drops. Exclusive gear. Gen 3 priority. No spam."}
+                  </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-3 mb-6">
