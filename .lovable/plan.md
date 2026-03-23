@@ -1,95 +1,28 @@
+## Plan: Final Cleanup Pass + Stripe Readiness
 
+### Issues Found
 
-## Plan: Diagnose White Screen + Full Status Report
+1. **PreorderPage.tsx — Card fields still pre-filled** (lines 185-189): `defaultValue="4242 4242 4242 4242"`, `"12 / 28"`, `"123"` are still present. The CheckoutPage was fixed but the PreorderPage was missed. Also the disclaimer still says "Test mode — no real charges will be made." instead of the updated Stripe messaging.
+2. **No other dead buttons or broken flows.** Everything else checks out: nav items match section order, footer links all wired, Apple button shows toast, restock modal personalized, countdown timer uses real date, size guide toast works, social proof bar present, aggregate rating bar present, all auth flows functional.
+3. Yes, and also none of them are particularly broken, but I really don't like how the user flow on all the e-commerce things go to this dead page that there's no other interaction to it except to go back that's not a good e-commerce flow and it's like an extra step anyway like yeah, we can have detailed information about the products, but that should be like as part of the flow and like an optional learn more but like if they click check out or click anything like basically added to the card and definitely not send it to Paige you can only go back from like this has to be like a catalog type of thing or they can look at this and like instantly scroll you know to see other products like normally e-commerce standard best practices you don't want to put money at a dead end with called action and it does it on every product page so I want you to fix that in a.
 
-### The White Screen Issue
+### Changes
 
-After reviewing every component file, the route configuration, all imports, and the entry points (`main.tsx` → `App.tsx` → all page/component files), the code is structurally sound. There are no missing imports, no syntax errors, and no circular dependencies. The white screen is most likely a **build cache or preview environment issue**, not a code bug.
+**File: `src/pages/PreorderPage.tsx**`
 
-**Proposed fix:** Make a trivial whitespace edit to `src/main.tsx` to force a fresh build and clear any stale cache. This is a known pattern for resolving transient preview issues.
+- Line 185: Remove `defaultValue="4242 4242 4242 4242"` from card number input
+- Line 187: Remove `defaultValue="12 / 28"` from expiry input  
+- Line 188: Remove `defaultValue="123"` from CVV input
+- Line 191: Change disclaimer text to match CheckoutPage: "Stripe integration coming soon. Your order will be reserved and confirmed — you'll be contacted before any charge."
 
----
+### Stripe Integration (Next Step)
 
-### Current State — Everything Implemented
+Once this cleanup is done, we can enable Stripe for real payment processing. You mentioned you have API keys — after this pass we can wire up Stripe checkout for both the standard cart flow and the pre-order flow. That's a separate step after this cleanup lands.
 
-Here is what has been built and verified by code review:
+### What's Already Solid
 
-**Homepage Section Order (Index.tsx):**
-Hero → Hardware → Ecosystem → Data → Drops → Flow → Reviews. Matches the latest request.
-
-**Navigation (Navbar.tsx):**
-Six nav items in correct order: Hardware, Ecosystem, Data, Drops, Flow, Reviews. Mobile bottom nav has 4 items (Shop, Flow, Cart, Drops).
-
-**Hero Section:**
-- 4 stats (16mm, 47.3g, 8.2oz, 6-Axis Neural-Grip)
-- SYS readout: HAPTIC::ARMED / SENSORS::6-AXIS
-- Social proof bar (4,200+ Freak-List, 234K TikTok, 5-star)
-- Trust line with "USAP submission Q3 2026"
-- Canvas particle background
-- Neon flicker animation on "FREAKY"
-
-**Product Showcase:**
-- 3 paddles with tier badges (Gen 2: MOST POPULAR, Gen 3: FLAGSHIP)
-- Quick-view modal on card click (not full navigation)
-- Bridge text: "Most paddles are dumb..."
-- Competitive context line (Gen 3 vs. Franklin, Ben Johns, Joola)
-- SVG radar chart (Pop/Control/Tech/Feel/Value)
-- Comparison table
-- Pre-order CTA with 25% discount
-
-**Reviews Section:**
-- Aggregate rating bar (4.9 / 847 reviews / 94% recommend)
-- 4 cyberpunk-styled review cards with neon quote marks + hover glow
-- DUPR badges
-
-**Courtana Integration:**
-- 3 feature cards
-- Animated SVG data pipeline (Paddle → AI → Profile)
-- "Connect your paddle" → toast (not dead)
-
-**Tech Dashboard:**
-- Animated count-up stats on scroll
-- SVG paddle impact map
-- "Analyzed by Courtana AI" badge
-- AI Coaching Insight card
-- Mobile-responsive grids (1-col on small screens)
-
-**Guerilla Drops:**
-- Persistent countdown to April 20, 2026
-- Digit-flip animation on timer
-- Sold-out "Volt Hoodie" past drop card
-- Restock waitlist → personalized modal ("JOIN THE RESTOCK LIST")
-
-**Footer:**
-- All social links wired (Instagram, TikTok, X)
-- Affiliate + Underground Map → toast
-- Privacy/Terms/Returns → toast
-- "Part of the Courtana Ecosystem" badge
-
-**Auth + Backend:**
-- Sign-in modal (email + Google)
-- Apple button → toast ("coming soon")
-- Waitlist writes to database
-- Orders table for checkout/pre-order
-
-**Checkout:**
-- Card fields cleared (no pre-filled test data)
-- Stripe disclaimer updated
-- Writes to orders table
-
-**Metadata (index.html):**
-- Correct title, description, author
-- OG/Twitter images pointed to pickleballfreakshow.com
-- JSON-LD structured data
-- Theme color, canonical URL
-
----
-
-### Proposed Changes for Next Round
-
-No new features — just the build fix:
-
-1. **Force rebuild** — trivial edit to `main.tsx` (add/remove blank line) to clear any stale build state causing the white screen.
-
-That should restore the preview. All code is in place and correct.
-
+- Backend: Lovable Cloud is fully set up with `profiles`, `orders`, `order_items`, `waitlist`, and `user_roles` tables, all with RLS policies
+- Auth: Email + Google OAuth working, Apple shows "coming soon" toast
+- All buttons wired — zero silent clicks
+- Homepage flow: Hero → Hardware → Ecosystem → Data → Drops → Flow → Reviews
+- Mobile: bottom nav (4 items), responsive grids, wrapping stats
