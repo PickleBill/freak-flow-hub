@@ -32,7 +32,7 @@ const apparelData: Record<string, {
     name: "'Cyber-Mesh' Shorts",
     tagline: "Performance mesh with 4-way stretch. Laser-cut ventilation panels and hidden zip pocket.",
     price: "$78",
-    image: athleteUrban,
+    image: cyberMeshShorts,
     tag: "DROP 003",
     available: true,
     sizes: ["S", "M", "L", "XL"],
