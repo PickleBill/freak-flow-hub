@@ -1,23 +1,26 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingBag, Zap } from "lucide-react";
+import { Menu, X, ShoppingBag, Zap, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
+import AuthModal from "@/components/AuthModal";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [glitchActive, setGlitchActive] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { toggleCart, cartCount } = useCart();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setGlitchActive(true);
       setTimeout(() => setGlitchActive(false), 500);
     }, 15000);
-    // trigger once on mount after 2s
     const initial = setTimeout(() => {
       setGlitchActive(true);
       setTimeout(() => setGlitchActive(false), 500);
@@ -68,6 +71,20 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-3">
+            {user ? (
+              <div className="hidden md:flex items-center gap-2">
+                <span className="text-xs font-mono text-neon-lime truncate max-w-[120px]">
+                  {user.user_metadata?.full_name || user.email?.split("@")[0]}
+                </span>
+                <button onClick={signOut} className="text-muted-foreground hover:text-neon-pink transition-colors p-1">
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => setShowAuth(true)} className="hidden md:flex items-center gap-1 text-xs font-mono text-muted-foreground hover:text-neon-lime transition-colors">
+                <User className="w-3.5 h-3.5" /> Sign In
+              </button>
+            )}
             <button onClick={toggleCart} className="relative text-foreground hover:text-neon-lime transition-colors p-2">
               <ShoppingBag className="w-4 h-4" />
               {cartCount > 0 && (
@@ -100,6 +117,15 @@ const Navbar = () => {
                   {item.label}
                 </button>
               ))}
+              {user ? (
+                <button onClick={() => { setIsOpen(false); signOut(); }} className="block text-sm font-mono text-neon-pink">
+                  Sign Out
+                </button>
+              ) : (
+                <button onClick={() => { setIsOpen(false); setShowAuth(true); }} className="block text-sm font-mono text-neon-lime">
+                  Sign In / Sign Up
+                </button>
+              )}
               <Button variant="neonLime" size="sm" className="w-full mt-3" onClick={() => { setIsOpen(false); navigate("/product/gen3-haptic-pro"); }}>
                 Shop Now
               </Button>
@@ -129,6 +155,7 @@ const Navbar = () => {
       </div>
 
       <CartDrawer />
+      <AuthModal open={showAuth} onClose={() => setShowAuth(false)} />
     </>
   );
 };

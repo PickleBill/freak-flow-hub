@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Zap, Send, MapPin, Users, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import EarlyAccessModal from "@/components/EarlyAccessModal";
 
@@ -12,9 +13,12 @@ const FooterSection = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
+      try {
+        await supabase.from("waitlist").insert({ email, source: "footer" });
+      } catch {}
       toast({ title: "You're on the list! 🔥", description: "We'll hit you with drops before anyone else." });
       setEmail("");
     }
@@ -90,7 +94,7 @@ const FooterSection = () => {
         </div>
       </div>
 
-      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} />
+      <EarlyAccessModal open={showEarlyAccess} onClose={() => setShowEarlyAccess(false)} source="footer" />
     </footer>
   );
 };

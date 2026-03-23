@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, ShoppingBag, Zap, Shield, Brain, Vibrate, Target, Gauge, Star } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Zap, Shield, Brain, Vibrate, Target, Gauge, Star, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import EarlyAccessModal from "@/components/EarlyAccessModal";
@@ -12,16 +12,65 @@ const productData: Record<string, {
   tagline: string;
   price: string;
   priceNum: number;
+  status: "instock" | "preorder";
   images: string[];
   features: { icon: typeof Zap; title: string; desc: string; color: "lime" | "pink" }[];
   specs: { label: string; value: string }[];
   reviews: { name: string; rating: number; text: string }[];
 }> = {
+  "gen1-og": {
+    name: "Freakshow Gen 1 OG",
+    tagline: "The original that started the underground. Standard foam core. Pure feel. No frills.",
+    price: "$149",
+    priceNum: 149,
+    status: "instock",
+    images: [paddleHero, paddleXray],
+    features: [
+      { icon: Shield, title: "Foam-Core Standard", desc: "14mm polymer foam core. Classic feel with reliable pop.", color: "lime" },
+      { icon: Target, title: "Wide Body", desc: "Standard face size for forgiving contact and consistent play.", color: "pink" },
+      { icon: Gauge, title: "Lightweight Build", desc: "7.8oz total weight for fast hands at the kitchen.", color: "lime" },
+    ],
+    specs: [
+      { label: "Core", value: "14mm Polymer Foam" },
+      { label: "Face", value: "Fiberglass" },
+      { label: "Weight", value: "7.8 oz" },
+      { label: "Handle", value: "5.0\" Standard" },
+    ],
+    reviews: [
+      { name: "Alex R.", rating: 5, text: "Solid entry paddle. Great feel and the price is unbeatable for this quality." },
+      { name: "Sam K.", rating: 4, text: "Love the simplicity. No gimmicks, just a well-built paddle." },
+    ],
+  },
+  "gen2-trainer": {
+    name: "Freakshow Gen 2 Trainer",
+    tagline: "Smaller face, tighter control. Built for drills, designed for precision freaks.",
+    price: "$189",
+    priceNum: 189,
+    status: "instock",
+    images: [paddleXray, paddleHero],
+    features: [
+      { icon: Target, title: "Compact Face", desc: "Reduced hitting surface forces precision — train your sweet spot.", color: "pink" },
+      { icon: Shield, title: "Thin Profile", desc: "13mm core for a thinner, faster profile with enhanced feedback.", color: "lime" },
+      { icon: Gauge, title: "Featherweight", desc: "7.4oz — the lightest Freakshow. Built for speed drills and reaction training.", color: "pink" },
+      { icon: Brain, title: "Grip Texture", desc: "Enhanced perforated grip for extended drill sessions.", color: "lime" },
+    ],
+    specs: [
+      { label: "Core", value: "13mm Polymer Foam" },
+      { label: "Face", value: "Carbon Fiber" },
+      { label: "Weight", value: "7.4 oz" },
+      { label: "Handle", value: "5.25\" Extended" },
+    ],
+    reviews: [
+      { name: "Jordan M.", rating: 5, text: "My coach recommended this and my accuracy improved in two weeks. Incredible training tool." },
+      { name: "Casey L.", rating: 5, text: "The smaller face forces you to be better. Then you switch to the Gen 3 and feel unstoppable." },
+    ],
+  },
   "gen3-haptic-pro": {
     name: "Freakshow Gen 3 Haptic Pro",
     tagline: "The paddle that plays back. Haptic feedback meets foam-core hybrid tech.",
     price: "$289",
     priceNum: 289,
+    status: "preorder",
     images: [paddleHero, paddleXray],
     features: [
       { icon: Shield, title: "Foam-Core Hybrid", desc: "16mm injected polymer foam with carbon fiber shell. Max pop, minimal vibration.", color: "lime" },
@@ -59,9 +108,10 @@ const ProductDetail = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setActiveImage(0);
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [slug]);
 
   const product = productData[slug || "gen3-haptic-pro"];
   if (!product) {
@@ -75,6 +125,8 @@ const ProductDetail = () => {
     );
   }
 
+  const discountPrice = +(product.priceNum * 0.75).toFixed(2);
+
   const handleAddToCart = () => {
     addToCart({
       id: slug || "gen3-haptic-pro",
@@ -83,17 +135,6 @@ const ProductDetail = () => {
       priceLabel: product.price,
       image: product.images[0],
     });
-  };
-
-  const handleBuyNow = () => {
-    addToCart({
-      id: slug || "gen3-haptic-pro",
-      name: product.name,
-      price: product.priceNum,
-      priceLabel: product.price,
-      image: product.images[0],
-    });
-    navigate("/checkout");
   };
 
   return (
@@ -134,9 +175,9 @@ const ProductDetail = () => {
             </div>
 
             <div className={`transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-neon-lime/30 bg-neon-lime/5 text-neon-lime text-xs font-mono tracking-widest uppercase">
-                <span className="w-1.5 h-1.5 bg-neon-lime rounded-full animate-pulse-neon" />
-                IN STOCK
+              <div className={`inline-flex items-center gap-2 px-3 py-1 mb-4 border text-xs font-mono tracking-widest uppercase ${product.status === "preorder" ? "border-neon-pink/30 bg-neon-pink/5 text-neon-pink" : "border-neon-lime/30 bg-neon-lime/5 text-neon-lime"}`}>
+                <span className={`w-1.5 h-1.5 rounded-full animate-pulse-neon ${product.status === "preorder" ? "bg-neon-pink" : "bg-neon-lime"}`} />
+                {product.status === "preorder" ? "PRE-ORDER" : "IN STOCK"}
               </div>
               <h1 className="text-3xl md:text-4xl font-display font-black text-foreground mb-3 leading-tight">
                 {product.name.toUpperCase()}
@@ -147,11 +188,19 @@ const ProductDetail = () => {
               <Button variant="neonLime" size="xl" className="w-full mb-4" onClick={handleAddToCart}>
                 <ShoppingBag className="w-5 h-5 mr-2" /> Add to Cart — {product.price}
               </Button>
-              <Button variant="neonPinkOutline" size="lg" className="w-full mb-4" onClick={handleBuyNow}>
-                Buy Now — Instant Checkout
+
+              <Button
+                variant="neonPinkOutline"
+                size="lg"
+                className="w-full mb-4"
+                onClick={() => navigate(`/preorder/${slug}`)}
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                Freak Member Pre-Order — <span className="line-through opacity-60 mx-1">{product.price}</span> ${discountPrice.toFixed(2)}
               </Button>
+
               <Button variant="ghost" size="sm" className="w-full text-muted-foreground hover:text-neon-lime" onClick={() => setShowEarlyAccess(true)}>
-                Join the Waitlist for Gen 4 →
+                Join the Freak-List for early access →
               </Button>
 
               <div className="mt-12">
