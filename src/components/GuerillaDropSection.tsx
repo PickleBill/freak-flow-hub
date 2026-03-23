@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Clock, ShoppingBag } from "lucide-react";
+import { Clock, ShoppingBag, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import renegadeTee from "@/assets/renegade-tee.jpg";
@@ -10,7 +10,7 @@ import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
 const products = [
   { name: "'Renegade' Oversized Tee", price: "$65", priceNum: 65, status: "available" as const, tag: "DROP 003", sizes: "S — XXL", slug: "renegade-tee", image: renegadeTee },
   { name: "'Cyber-Mesh' Shorts", price: "$78", priceNum: 78, status: "available" as const, tag: "DROP 003", sizes: "S — XL", slug: "cyber-mesh-shorts", image: cyberMeshShorts },
-  { name: "'Freakshow' Tech-Hat", price: "$48", priceNum: 48, status: "soldout" as const, tag: "SOLD OUT", sizes: "One Size", slug: "freakshow-tech-hat", image: freakshowTechHat },
+  { name: "'Freakshow' Tech-Hat", price: "$48", priceNum: 48, status: "preorder" as const, tag: "PRE-ORDER", sizes: "One Size", slug: "freakshow-tech-hat", image: freakshowTechHat },
 ];
 
 const CountdownTimer = () => {
@@ -105,7 +105,7 @@ const GuerillaDropSection = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <span className={`inline-block px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase mb-2 ${product.status === "soldout" ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30" : "bg-neon-lime/10 text-neon-lime border border-neon-lime/30"}`}>
+                    <span className={`inline-block px-2 py-0.5 text-[10px] font-mono tracking-widest uppercase mb-2 ${product.status === "preorder" ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30" : "bg-neon-lime/10 text-neon-lime border border-neon-lime/30"}`}>
                       {product.tag}
                     </span>
                     <h3 className="text-lg font-display font-bold text-foreground">{product.name}</h3>
@@ -114,11 +114,11 @@ const GuerillaDropSection = () => {
                   <div className="text-xl font-display font-bold text-neon-lime">{product.price}</div>
                 </div>
 
-                {product.status === "soldout" ? (
+                {product.status === "preorder" ? (
                   <div className="space-y-3">
                     <CountdownTimer />
                     <Button variant="neonPinkOutline" size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); navigate(`/apparel/${product.slug}`); }}>
-                      View Details
+                      <Crown className="w-3.5 h-3.5 mr-2" /> Pre-Order — {product.price}
                     </Button>
                   </div>
                 ) : (

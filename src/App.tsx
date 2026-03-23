@@ -10,6 +10,7 @@ import ProductDetail from "./pages/ProductDetail.tsx";
 import ApparelDetail from "./pages/ApparelDetail.tsx";
 import FutureOfFreaking from "./pages/FutureOfFreaking.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
+import PreorderPage from "./pages/PreorderPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/apparel/:slug" element={<ApparelDetail />} />
             <Route path="/future" element={<FutureOfFreaking />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/preorder/:slug" element={<PreorderPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

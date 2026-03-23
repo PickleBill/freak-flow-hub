@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, ShoppingBag, Ruler } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Ruler, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import EarlyAccessModal from "@/components/EarlyAccessModal";
@@ -50,8 +50,8 @@ const apparelData: Record<string, {
     price: "$48",
     priceNum: 48,
     image: freakshowTechHat,
-    tag: "SOLD OUT",
-    available: false,
+    tag: "PRE-ORDER",
+    available: true,
     sizes: ["One Size"],
     details: ["Structured 6-panel", "Embedded NFC chip", "Moisture-wicking sweatband", "Adjustable snapback", "Reflective logo patch"],
     material: "100% Ripstop Nylon",
@@ -83,6 +83,9 @@ const ApparelDetail = () => {
       </div>
     );
   }
+
+  const isPreorder = product.tag === "PRE-ORDER";
+  const discountPrice = +(product.priceNum * 0.75).toFixed(2);
 
   const handleAddToCart = () => {
     addToCart({
@@ -124,7 +127,7 @@ const ApparelDetail = () => {
                 <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 scanline-overlay pointer-events-none opacity-20" />
                 <div className="absolute top-4 left-4">
-                  <span className={`px-3 py-1 text-xs font-mono tracking-widest uppercase ${product.available ? "bg-neon-lime/10 text-neon-lime border border-neon-lime/30" : "bg-neon-pink/10 text-neon-pink border border-neon-pink/30"}`}>
+                  <span className={`px-3 py-1 text-xs font-mono tracking-widest uppercase ${isPreorder ? "bg-neon-pink/10 text-neon-pink border border-neon-pink/30" : "bg-neon-lime/10 text-neon-lime border border-neon-lime/30"}`}>
                     {product.tag}
                   </span>
                 </div>
@@ -132,7 +135,7 @@ const ApparelDetail = () => {
             </div>
 
             <div className={`transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 mb-4 border border-neon-pink/30 bg-neon-pink/5 text-neon-pink text-xs font-mono tracking-widest uppercase">
+              <div className={`inline-flex items-center gap-2 px-3 py-1 mb-4 border text-xs font-mono tracking-widest uppercase ${isPreorder ? "border-neon-pink/30 bg-neon-pink/5 text-neon-pink" : "border-neon-pink/30 bg-neon-pink/5 text-neon-pink"}`}>
                 <span className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse-neon" />
                 GUERILLA DROP
               </div>
@@ -162,21 +165,22 @@ const ApparelDetail = () => {
                 </div>
               </div>
 
-              {product.available ? (
-                <>
-                  <Button variant="neonLime" size="xl" className="w-full mb-4" disabled={!selectedSize} onClick={handleAddToCart}>
-                    <ShoppingBag className="w-5 h-5 mr-2" />
-                    {selectedSize ? `Add to Cart — ${product.price}` : "Select a Size"}
-                  </Button>
-                  <Button variant="neonPinkOutline" size="lg" className="w-full mb-4" disabled={!selectedSize} onClick={handleBuyNow}>
-                    Buy Now — Instant Checkout
-                  </Button>
-                </>
+              <Button variant="neonLime" size="xl" className="w-full mb-4" disabled={!selectedSize} onClick={handleAddToCart}>
+                <ShoppingBag className="w-5 h-5 mr-2" />
+                {selectedSize ? `Add to Cart — ${product.price}` : "Select a Size"}
+              </Button>
+
+              {isPreorder ? (
+                <Button variant="neonPinkOutline" size="lg" className="w-full mb-4" onClick={() => navigate(`/apparel/${slug}`)}>
+                  <Crown className="w-4 h-4 mr-2" />
+                  Freak Member Pre-Order — <span className="line-through opacity-60 mx-1">{product.price}</span> ${discountPrice.toFixed(2)}
+                </Button>
               ) : (
-                <Button variant="neonPinkOutline" size="xl" className="w-full mb-4" onClick={() => setShowEarlyAccess(true)}>
-                  Sold Out — Notify Me When Back
+                <Button variant="neonPinkOutline" size="lg" className="w-full mb-4" disabled={!selectedSize} onClick={handleBuyNow}>
+                  Buy Now — Instant Checkout
                 </Button>
               )}
+
               <Button variant="ghost" size="sm" className="w-full text-muted-foreground hover:text-neon-lime" onClick={() => setShowEarlyAccess(true)}>
                 Join the Freak-List for early drop access →
               </Button>
