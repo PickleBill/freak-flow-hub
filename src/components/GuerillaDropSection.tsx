@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Clock, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import apparelCollection from "@/assets/apparel-collection.jpg";
+import renegadeTee from "@/assets/renegade-tee.jpg";
+import cyberMeshShorts from "@/assets/cyber-mesh-shorts.jpg";
+import freakshowTechHat from "@/assets/freakshow-tech-hat.jpg";
 
 const products = [
-  { name: "'Renegade' Oversized Tee", price: "$65", status: "available" as const, tag: "DROP 003", sizes: "S — XXL", slug: "renegade-tee" },
-  { name: "'Cyber-Mesh' Shorts", price: "$78", status: "available" as const, tag: "DROP 003", sizes: "S — XL", slug: "cyber-mesh-shorts" },
-  { name: "'Freakshow' Tech-Hat", price: "$48", status: "soldout" as const, tag: "SOLD OUT", sizes: "One Size", slug: "freakshow-tech-hat" },
+  { name: "'Renegade' Oversized Tee", price: "$65", status: "available" as const, tag: "DROP 003", sizes: "S — XXL", slug: "renegade-tee", image: renegadeTee },
+  { name: "'Cyber-Mesh' Shorts", price: "$78", status: "available" as const, tag: "DROP 003", sizes: "S — XL", slug: "cyber-mesh-shorts", image: cyberMeshShorts },
+  { name: "'Freakshow' Tech-Hat", price: "$48", status: "soldout" as const, tag: "SOLD OUT", sizes: "One Size", slug: "freakshow-tech-hat", image: freakshowTechHat },
 ];
 
 const CountdownTimer = () => {
