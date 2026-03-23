@@ -1,28 +1,43 @@
-## Plan: Final Cleanup Pass + Stripe Readiness
 
-### Issues Found
 
-1. **PreorderPage.tsx — Card fields still pre-filled** (lines 185-189): `defaultValue="4242 4242 4242 4242"`, `"12 / 28"`, `"123"` are still present. The CheckoutPage was fixed but the PreorderPage was missed. Also the disclaimer still says "Test mode — no real charges will be made." instead of the updated Stripe messaging.
-2. **No other dead buttons or broken flows.** Everything else checks out: nav items match section order, footer links all wired, Apple button shows toast, restock modal personalized, countdown timer uses real date, size guide toast works, social proof bar present, aggregate rating bar present, all auth flows functional.
-3. Yes, and also none of them are particularly broken, but I really don't like how the user flow on all the e-commerce things go to this dead page that there's no other interaction to it except to go back that's not a good e-commerce flow and it's like an extra step anyway like yeah, we can have detailed information about the products, but that should be like as part of the flow and like an optional learn more but like if they click check out or click anything like basically added to the card and definitely not send it to Paige you can only go back from like this has to be like a catalog type of thing or they can look at this and like instantly scroll you know to see other products like normally e-commerce standard best practices you don't want to put money at a dead end with called action and it does it on every product page so I want you to fix that in a.
+## Plan: Expand Catalog, Enable Stripe, Polish E-Commerce Flow
 
-### Changes
+### 1. Enable Stripe Integration
+Call `stripe--enable_stripe` to scaffold the Stripe integration. This sets up the framework — you'll provide your API key later. The checkout flow will be wired to use Stripe Checkout sessions.
 
-**File: `src/pages/PreorderPage.tsx**`
+### 2. Expand Apparel Catalog — New Wild Items
+Add 4 new products to both `GuerillaDropSection.tsx` and `ApparelDetail.tsx`:
 
-- Line 185: Remove `defaultValue="4242 4242 4242 4242"` from card number input
-- Line 187: Remove `defaultValue="12 / 28"` from expiry input  
-- Line 188: Remove `defaultValue="123"` from CVV input
-- Line 191: Change disclaimer text to match CheckoutPage: "Stripe integration coming soon. Your order will be reserved and confirmed — you'll be contacted before any charge."
+- **'Freakshow' Tropical Court Shirt** — $85 — Hawaiian-style button-up with neon paddle prints, UV-protective, mesh-back ventilation. Tag: DROP 004.
+- **'Chubby Freak' Wide-Leg Pants** — $92 — Loud branded wide-leg pants with all-over Freakshow pattern, elastic waist, deep pockets. Tag: DROP 004.
+- **'Electro-Ball' LED Pickleballs (3-pack)** — $34 — Glow-in-the-dark pickleballs with embedded LEDs, tournament-weight, USB rechargeable. Tag: NEW GEAR.
+- **'Neural Net' Court Bag** — $120 — Tech-enabled duffel with paddle compartment, shoe pocket, NFC tag, and reflective branding. Tag: PRE-ORDER.
 
-### Stripe Integration (Next Step)
+Since we don't have real images, we'll reuse existing asset images mapped creatively (e.g., `athlete-urban.jpg`, `apparel-collection.jpg`, `app-dashboard.jpg`, `athlete-1.jpg`).
 
-Once this cleanup is done, we can enable Stripe for real payment processing. You mentioned you have API keys — after this pass we can wire up Stripe checkout for both the standard cart flow and the pre-order flow. That's a separate step after this cleanup lands.
+**Files changed:**
+- `src/components/GuerillaDropSection.tsx` — add 4 new product entries to the `products` array, update grid layout
+- `src/pages/ApparelDetail.tsx` — add 4 matching entries to `apparelData` with sizes, details, materials
 
-### What's Already Solid
+### 3. Add New Gear Route for Non-Apparel Items
+The LED pickleballs and court bag aren't apparel — but they can share the `ApparelDetail` page pattern since it handles sizes and details generically. We'll route them through `/apparel/` for simplicity (rename concept to "gear" in the UI but keep the route).
 
-- Backend: Lovable Cloud is fully set up with `profiles`, `orders`, `order_items`, `waitlist`, and `user_roles` tables, all with RLS policies
-- Auth: Email + Google OAuth working, Apple shows "coming soon" toast
-- All buttons wired — zero silent clicks
-- Homepage flow: Hero → Hardware → Ecosystem → Data → Drops → Flow → Reviews
-- Mobile: bottom nav (4 items), responsive grids, wrapping stats
+### 4. Polish Checkout Flow with Stripe Placeholder
+Update `CheckoutPage.tsx` to show a cleaner "Pay with Stripe" button that will eventually trigger a Stripe Checkout session. Remove the manual card fields entirely and replace with a single CTA that says "Pay with Stripe — ${total}" (disabled with "Coming soon" tooltip until API key is added).
+
+**Files changed:**
+- `src/pages/CheckoutPage.tsx` — replace card input fields with Stripe CTA button
+- `src/pages/PreorderPage.tsx` — same treatment
+
+### 5. Verify Cross-Sell Circularity
+Ensure `ApparelDetail.tsx` cross-sell section shows the new items too (it already dynamically filters from `apparelData`, so adding entries is sufficient).
+
+### Summary of Files
+| File | Change |
+|------|--------|
+| `GuerillaDropSection.tsx` | Add 4 new products to array |
+| `ApparelDetail.tsx` | Add 4 new product data entries |
+| `CheckoutPage.tsx` | Replace card fields with Stripe CTA |
+| `PreorderPage.tsx` | Replace card fields with Stripe CTA |
+| Stripe enable | Call `stripe--enable_stripe` tool |
+
