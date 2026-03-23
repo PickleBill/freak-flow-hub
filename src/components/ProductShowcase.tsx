@@ -232,10 +232,10 @@ const ProductShowcase = () => {
             <Table className="bg-card border border-border rounded">
               <TableHeader>
                 <TableRow className="border-border hover:bg-transparent">
-                  <TableHead className="font-mono text-xs text-muted-foreground uppercase tracking-widest">Feature</TableHead>
-                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 1 OG</TableHead>
-                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 2 Trainer</TableHead>
-                  <TableHead className="font-mono text-xs text-neon-lime uppercase tracking-widest text-center">Gen 3 Haptic Pro</TableHead>
+                  <TableHead className="font-mono text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest min-w-[100px]">Feature</TableHead>
+                  <TableHead className="font-mono text-[10px] sm:text-xs text-neon-lime uppercase tracking-widest text-center min-w-[90px] whitespace-nowrap">Gen 1<span className="hidden sm:inline"> OG</span></TableHead>
+                  <TableHead className="font-mono text-[10px] sm:text-xs text-neon-lime uppercase tracking-widest text-center min-w-[90px] whitespace-nowrap">Gen 2<span className="hidden sm:inline"> Trainer</span></TableHead>
+                  <TableHead className="font-mono text-[10px] sm:text-xs text-neon-lime uppercase tracking-widest text-center min-w-[90px] whitespace-nowrap">Gen 3<span className="hidden sm:inline"> Haptic Pro</span></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

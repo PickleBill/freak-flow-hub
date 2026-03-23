@@ -197,7 +197,7 @@ const ApparelDetail = () => {
                 <span className="w-1.5 h-1.5 bg-neon-pink rounded-full animate-pulse-neon" />
                 GUERILLA DROP
               </div>
-              <h1 className="text-3xl md:text-4xl font-display font-black text-foreground mb-3 leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-black text-foreground mb-3 leading-tight">
                 {product.name.toUpperCase()}
               </h1>
               <p className="text-muted-foreground font-mono text-sm mb-6">{product.tagline}</p>

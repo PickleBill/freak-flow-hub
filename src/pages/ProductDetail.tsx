@@ -263,7 +263,7 @@ const ProductDetail = () => {
               COMPARE THE <span className="text-neon-lime neon-text-lime">LINEUP</span>
             </h2>
             <p className="text-xs text-muted-foreground font-mono text-center mb-10">Every freak has a favorite. Find yours.</p>
-            <div className="grid sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {Object.entries(productData).filter(([s]) => s !== slug).map(([otherSlug, p]) => (
                 <div
                   key={otherSlug}
