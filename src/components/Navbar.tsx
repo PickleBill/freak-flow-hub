@@ -113,7 +113,13 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden bg-card border-t border-border">
             <div className="px-6 py-4 space-y-3">
-              {navItems.map((item) => (
+              <button
+                onClick={() => { setIsOpen(false); navigate("/shop"); }}
+                className="block text-sm font-mono tracking-widest uppercase text-neon-lime font-bold"
+              >
+                Shop All
+              </button>
+              {scrollItems.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => scrollTo(item.id)}
