@@ -34,7 +34,9 @@ const productPrices: Record<string, number> = {
 
 const socialPosts = [
   { platform: "TikTok", handle: "@freakshow.pb", caption: "That haptic feedback hit different 🔥 #pickleballfreakshow #gen3", likes: "234K", comments: "1.2K", image: athlete1, product: "Gen 3 Haptic Pro", price: "$289", tall: true },
+  { platform: "Instagram", handle: "@freakshow.pb", caption: "Dad bod energy meets court domination 🏓💪", likes: "312K", comments: "4.7K", image: "", product: "Renegade Tee", price: "$65", tall: false, video: flowVideoIG },
   { platform: "Instagram", handle: "@maya.strikes", caption: "Underground sessions with the crew. New paddle, new vibes.", likes: "89K", comments: "847", image: athlete2, product: "Renegade Tee", price: "$65", tall: false },
+  { platform: "YouTube", handle: "FreakshowTV", caption: "THAT SHOT. The one that broke the internet. Full court angle 🎬", likes: "2.1M", comments: "31K", image: "", product: "Gen 3 Haptic Pro", price: "$289", tall: false, video: flowVideoYT },
   { platform: "YouTube", handle: "FreakshowTV", caption: "GEN 3 HAPTIC PRO — FULL REVIEW | Is this the future of pickleball?", likes: "1.4M", comments: "23K", image: athlete3, product: "Gen 3 Haptic Pro", price: "$289", tall: false },
   { platform: "TikTok", handle: "@dink.master", caption: "The Neural-Grip sensors are INSANE. My swing data is 📈", likes: "567K", comments: "3.4K", image: athlete4, product: "Cyber-Mesh Shorts", price: "$78", tall: true },
   { platform: "Instagram", handle: "@freakshow.pb", caption: "Drop 003 incoming. Are you ready? 👁️", likes: "156K", comments: "2.1K", image: athlete5, product: "Freakshow Tech-Hat", price: "$48", tall: false },
