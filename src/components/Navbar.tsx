@@ -7,7 +7,7 @@ import CartDrawer from "@/components/CartDrawer";
 import AuthModal from "@/components/AuthModal";
 import { useAuth } from "@/hooks/useAuth";
 
-const navItems = [
+const scrollItems = [
   { label: "Hardware", id: "hardware" },
   { label: "Ecosystem", id: "ecosystem" },
   { label: "Data", id: "data" },
@@ -63,7 +63,13 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
+            <button
+              onClick={() => navigate("/shop")}
+              className="text-xs font-mono tracking-widest uppercase text-neon-lime hover:text-neon-lime/80 transition-colors duration-200 font-bold"
+            >
+              Shop
+            </button>
+            {scrollItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollTo(item.id)}
@@ -107,7 +113,13 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden bg-card border-t border-border">
             <div className="px-6 py-4 space-y-3">
-              {navItems.map((item) => (
+              <button
+                onClick={() => { setIsOpen(false); navigate("/shop"); }}
+                className="block text-sm font-mono tracking-widest uppercase text-neon-lime font-bold"
+              >
+                Shop All
+              </button>
+              {scrollItems.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => scrollTo(item.id)}
@@ -135,7 +147,7 @@ const Navbar = () => {
 
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-card/95 backdrop-blur-md border-t border-border">
         <div className="flex items-center justify-around h-14">
-          <button onClick={() => scrollTo("hardware")} className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-neon-lime transition-colors">
+          <button onClick={() => navigate("/shop")} className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-neon-lime transition-colors">
             <Zap className="w-4 h-4" />
             <span className="text-[10px] font-mono uppercase tracking-wider">Shop</span>
           </button>

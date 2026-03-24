@@ -10,6 +10,8 @@ import athlete3 from "@/assets/athlete-3.jpg";
 import athlete4 from "@/assets/athlete-4.jpg";
 import athlete5 from "@/assets/athlete-5.jpg";
 import paddleHero from "@/assets/paddle-hero.jpg";
+import flowVideoIG from "@/assets/flow-video-instagram.mp4";
+import flowVideoYT from "@/assets/flow-video-youtube.mov";
 
 const productSlugs: Record<string, { type: string; slug: string }> = {
   "Gen 3 Haptic Pro": { type: "product", slug: "gen3-haptic-pro" },
@@ -34,7 +36,9 @@ const productPrices: Record<string, number> = {
 
 const socialPosts = [
   { platform: "TikTok", handle: "@freakshow.pb", caption: "That haptic feedback hit different 🔥 #pickleballfreakshow #gen3", likes: "234K", comments: "1.2K", image: athlete1, product: "Gen 3 Haptic Pro", price: "$289", tall: true },
+  { platform: "Instagram", handle: "@freakshow.pb", caption: "Dad bod energy meets court domination 🏓💪", likes: "312K", comments: "4.7K", image: "", product: "Renegade Tee", price: "$65", tall: false, video: flowVideoIG },
   { platform: "Instagram", handle: "@maya.strikes", caption: "Underground sessions with the crew. New paddle, new vibes.", likes: "89K", comments: "847", image: athlete2, product: "Renegade Tee", price: "$65", tall: false },
+  { platform: "YouTube", handle: "FreakshowTV", caption: "THAT SHOT. The one that broke the internet. Full court angle 🎬", likes: "2.1M", comments: "31K", image: "", product: "Gen 3 Haptic Pro", price: "$289", tall: false, video: flowVideoYT },
   { platform: "YouTube", handle: "FreakshowTV", caption: "GEN 3 HAPTIC PRO — FULL REVIEW | Is this the future of pickleball?", likes: "1.4M", comments: "23K", image: athlete3, product: "Gen 3 Haptic Pro", price: "$289", tall: false },
   { platform: "TikTok", handle: "@dink.master", caption: "The Neural-Grip sensors are INSANE. My swing data is 📈", likes: "567K", comments: "3.4K", image: athlete4, product: "Cyber-Mesh Shorts", price: "$78", tall: true },
   { platform: "Instagram", handle: "@freakshow.pb", caption: "Drop 003 incoming. Are you ready? 👁️", likes: "156K", comments: "2.1K", image: athlete5, product: "Freakshow Tech-Hat", price: "$48", tall: false },
@@ -112,13 +116,27 @@ const FreakFlowSection = () => {
               onClick={() => setSelectedPost(post)}
             >
               <div className={`relative overflow-hidden ${post.tall ? "aspect-[3/4]" : "aspect-video"}`}>
-                <img src={post.image} alt={post.caption} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                {(post as any).video ? (
+                  <video
+                    src={(post as any).video}
+                    muted
+                    playsInline
+                    loop
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
+                    onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
+                  />
+                ) : (
+                  <img src={post.image} alt={post.caption} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-14 h-14 rounded-full bg-neon-lime/20 flex items-center justify-center neon-glow-lime">
-                    <Play className="w-6 h-6 text-neon-lime ml-1" />
+                {!(post as any).video && (
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-14 h-14 rounded-full bg-neon-lime/20 flex items-center justify-center neon-glow-lime">
+                      <Play className="w-6 h-6 text-neon-lime ml-1" />
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="absolute top-3 left-3 px-2 py-0.5 bg-background/80 text-xs font-mono text-neon-lime tracking-wider uppercase">{post.platform}</div>
               </div>
 
