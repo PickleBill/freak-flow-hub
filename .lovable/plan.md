@@ -1,43 +1,54 @@
 
 
-## Plan: Expand Catalog, Enable Stripe, Polish E-Commerce Flow
+## Plan: Shop Page + Video Content in Freak-Flow
 
-### 1. Enable Stripe Integration
-Call `stripe--enable_stripe` to scaffold the Stripe integration. This sets up the framework — you'll provide your API key later. The checkout flow will be wired to use Stripe Checkout sessions.
+### 1. Create `/shop` Page (`src/pages/ShopPage.tsx`)
 
-### 2. Expand Apparel Catalog — New Wild Items
-Add 4 new products to both `GuerillaDropSection.tsx` and `ApparelDetail.tsx`:
+A dedicated catalog page with category filtering. Combines all paddles, apparel, and gear into one browsable grid.
 
-- **'Freakshow' Tropical Court Shirt** — $85 — Hawaiian-style button-up with neon paddle prints, UV-protective, mesh-back ventilation. Tag: DROP 004.
-- **'Chubby Freak' Wide-Leg Pants** — $92 — Loud branded wide-leg pants with all-over Freakshow pattern, elastic waist, deep pockets. Tag: DROP 004.
-- **'Electro-Ball' LED Pickleballs (3-pack)** — $34 — Glow-in-the-dark pickleballs with embedded LEDs, tournament-weight, USB rechargeable. Tag: NEW GEAR.
-- **'Neural Net' Court Bag** — $120 — Tech-enabled duffel with paddle compartment, shoe pocket, NFC tag, and reflective branding. Tag: PRE-ORDER.
+**Data source:** Reuse the same product data already defined in `ProductShowcase.tsx` (3 paddles), `GuerillaDropSection.tsx` (7 apparel/gear items). Consolidate into a single array on this page with a `category` field: `"Paddles" | "Apparel" | "Gear"`.
 
-Since we don't have real images, we'll reuse existing asset images mapped creatively (e.g., `athlete-urban.jpg`, `apparel-collection.jpg`, `app-dashboard.jpg`, `athlete-1.jpg`).
+**Category mapping:**
+- Paddles: Gen 1 OG, Gen 2 Trainer, Gen 3 Haptic Pro
+- Apparel: Renegade Tee, Cyber-Mesh Shorts, Freakshow Tech-Hat, Tropical Court Shirt, Chubby Freak Pants
+- Gear: Electro-Ball LED Pickleballs, Neural Net Court Bag
 
-**Files changed:**
-- `src/components/GuerillaDropSection.tsx` — add 4 new product entries to the `products` array, update grid layout
-- `src/pages/ApparelDetail.tsx` — add 4 matching entries to `apparelData` with sizes, details, materials
+**UI structure:**
+- Top navbar (brand + back to home + cart icon)
+- Category filter pills: ALL / Paddles / Apparel / Gear (neon-styled toggle buttons)
+- Responsive product grid (2-col mobile, 3-col tablet, 4-col desktop)
+- Each card: image, name, price, tag badge, "Add to Cart" button
+- Clicking card navigates to `/product/:slug` for paddles or `/apparel/:slug` for apparel/gear
 
-### 3. Add New Gear Route for Non-Apparel Items
-The LED pickleballs and court bag aren't apparel — but they can share the `ApparelDetail` page pattern since it handles sizes and details generically. We'll route them through `/apparel/` for simplicity (rename concept to "gear" in the UI but keep the route).
+### 2. Add Route + Nav Link
 
-### 4. Polish Checkout Flow with Stripe Placeholder
-Update `CheckoutPage.tsx` to show a cleaner "Pay with Stripe" button that will eventually trigger a Stripe Checkout session. Remove the manual card fields entirely and replace with a single CTA that says "Pay with Stripe — ${total}" (disabled with "Coming soon" tooltip until API key is added).
+**`src/App.tsx`:** Add `<Route path="/shop" element={<ShopPage />} />`.
 
-**Files changed:**
-- `src/pages/CheckoutPage.tsx` — replace card input fields with Stripe CTA button
-- `src/pages/PreorderPage.tsx` — same treatment
+**`src/components/Navbar.tsx`:** Add a "Shop" link to the nav that navigates to `/shop` (not a scroll target). Update the mobile bottom nav to link to `/shop` instead of scrolling to hardware.
 
-### 5. Verify Cross-Sell Circularity
-Ensure `ApparelDetail.tsx` cross-sell section shows the new items too (it already dynamically filters from `apparelData`, so adding entries is sufficient).
+### 3. Copy Videos + Add to Freak-Flow (`src/components/FreakFlowSection.tsx`)
 
-### Summary of Files
+Copy the two uploaded videos into `src/assets/`:
+- `user-uploads://bluey_dad_body_4pane.mp4` → `src/assets/flow-video-instagram.mp4`
+- `user-uploads://That_Shot.mov` → `src/assets/flow-video-youtube.mov`
+
+Add two new entries to the `socialPosts` array — one as a YouTube post, one as Instagram. These will use `<video>` elements instead of `<img>` tags, with an on-brand overlay mask:
+
+- Dark gradient overlay with platform badge (YouTube / Instagram)
+- Neon-lime border glow on hover
+- Play button overlay (already exists in current card design)
+- The videos autoplay muted on hover, pause on mouse leave
+
+**Card detection:** Add an optional `video` field to post objects. When present, render `<video>` instead of `<img>`, with `muted playsInline loop` attributes and hover-triggered play/pause.
+
+### 4. Files Changed
+
 | File | Change |
 |------|--------|
-| `GuerillaDropSection.tsx` | Add 4 new products to array |
-| `ApparelDetail.tsx` | Add 4 new product data entries |
-| `CheckoutPage.tsx` | Replace card fields with Stripe CTA |
-| `PreorderPage.tsx` | Replace card fields with Stripe CTA |
-| Stripe enable | Call `stripe--enable_stripe` tool |
+| `src/pages/ShopPage.tsx` | New — full catalog page with filters |
+| `src/App.tsx` | Add `/shop` route |
+| `src/components/Navbar.tsx` | Add Shop nav link, update mobile bottom nav |
+| `src/components/FreakFlowSection.tsx` | Add 2 video posts with video element rendering |
+| `src/assets/flow-video-instagram.mp4` | Copied from upload |
+| `src/assets/flow-video-youtube.mov` | Copied from upload |
 
