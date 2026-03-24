@@ -63,7 +63,13 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
+            <button
+              onClick={() => navigate("/shop")}
+              className="text-xs font-mono tracking-widest uppercase text-neon-lime hover:text-neon-lime/80 transition-colors duration-200 font-bold"
+            >
+              Shop
+            </button>
+            {scrollItems.map((item) => (
               <button
                 key={item.label}
                 onClick={() => scrollTo(item.id)}
