@@ -10,6 +10,8 @@ import athlete3 from "@/assets/athlete-3.jpg";
 import athlete4 from "@/assets/athlete-4.jpg";
 import athlete5 from "@/assets/athlete-5.jpg";
 import paddleHero from "@/assets/paddle-hero.jpg";
+import flowVideoIG from "@/assets/flow-video-instagram.mp4";
+import flowVideoYT from "@/assets/flow-video-youtube.mov";
 
 const productSlugs: Record<string, { type: string; slug: string }> = {
   "Gen 3 Haptic Pro": { type: "product", slug: "gen3-haptic-pro" },
