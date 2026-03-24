@@ -114,13 +114,27 @@ const FreakFlowSection = () => {
               onClick={() => setSelectedPost(post)}
             >
               <div className={`relative overflow-hidden ${post.tall ? "aspect-[3/4]" : "aspect-video"}`}>
-                <img src={post.image} alt={post.caption} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                {(post as any).video ? (
+                  <video
+                    src={(post as any).video}
+                    muted
+                    playsInline
+                    loop
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
+                    onMouseLeave={(e) => { const v = e.target as HTMLVideoElement; v.pause(); v.currentTime = 0; }}
+                  />
+                ) : (
+                  <img src={post.image} alt={post.caption} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-14 h-14 rounded-full bg-neon-lime/20 flex items-center justify-center neon-glow-lime">
-                    <Play className="w-6 h-6 text-neon-lime ml-1" />
+                {!(post as any).video && (
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="w-14 h-14 rounded-full bg-neon-lime/20 flex items-center justify-center neon-glow-lime">
+                      <Play className="w-6 h-6 text-neon-lime ml-1" />
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="absolute top-3 left-3 px-2 py-0.5 bg-background/80 text-xs font-mono text-neon-lime tracking-wider uppercase">{post.platform}</div>
               </div>
 

@@ -11,6 +11,7 @@ import ApparelDetail from "./pages/ApparelDetail.tsx";
 import FutureOfFreaking from "./pages/FutureOfFreaking.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
 import PreorderPage from "./pages/PreorderPage.tsx";
+import ShopPage from "./pages/ShopPage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/shop" element={<ShopPage />} />
             <Route path="/product/:slug" element={<ProductDetail />} />
             <Route path="/apparel/:slug" element={<ApparelDetail />} />
             <Route path="/future" element={<FutureOfFreaking />} />

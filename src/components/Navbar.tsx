@@ -147,7 +147,7 @@ const Navbar = () => {
 
       <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-card/95 backdrop-blur-md border-t border-border">
         <div className="flex items-center justify-around h-14">
-          <button onClick={() => scrollTo("hardware")} className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-neon-lime transition-colors">
+          <button onClick={() => navigate("/shop")} className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-neon-lime transition-colors">
             <Zap className="w-4 h-4" />
             <span className="text-[10px] font-mono uppercase tracking-wider">Shop</span>
           </button>
