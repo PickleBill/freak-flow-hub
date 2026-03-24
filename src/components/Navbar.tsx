@@ -7,7 +7,7 @@ import CartDrawer from "@/components/CartDrawer";
 import AuthModal from "@/components/AuthModal";
 import { useAuth } from "@/hooks/useAuth";
 
-const navItems = [
+const scrollItems = [
   { label: "Hardware", id: "hardware" },
   { label: "Ecosystem", id: "ecosystem" },
   { label: "Data", id: "data" },
